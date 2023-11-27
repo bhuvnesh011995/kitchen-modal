@@ -10,6 +10,7 @@ export default function POSMain(){
      const [category, setCategory] =useState('All Dishes')
      const [showCategoryList , setShowCategoryList] = useState(false)
      const [product,setProduct] =useState([])
+     const [showProduct ,setShowProduct] = useState([])
 
      const [categories ,setCategories] = useState([])
 
@@ -17,12 +18,25 @@ export default function POSMain(){
      console.log(product)
 
        const handleCategoryClick = (category) =>{
+        alert(category)
            setCategory(category)
            setShowCategoryList(false)
        }
-  
+    
+       const handleProductClick = (product) => {
+        setShowProduct((prevProducts) => {
+          const existingProductIndex = prevProducts.findIndex((p) => p._id === product._id);
       
-
+          if (existingProductIndex !== -1) {
+            const updatedProducts = [...prevProducts];
+            updatedProducts[existingProductIndex].quantity += 1;
+            return updatedProducts;
+          } else {
+            return [...prevProducts, { ...product, quantity: 1 }];
+          }
+        });
+      };
+      
 
        async function getAllProduct(){
           let res = await  getProduct()
@@ -56,7 +70,7 @@ export default function POSMain(){
                                     <div className="product-screen screen">
                                         <div className="screen-full-width row">
                                                                                          
-                                    <LeftPane/>
+                                    <LeftPane   showProduct={showProduct} />
 
                                             <div className="rightpane ">
             <div className="products-widget">
@@ -99,7 +113,8 @@ export default function POSMain(){
                     <div className="grid product-list">
 
                       {filteredProducts.map((item)=>(  
-                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24">
+                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24"   onClick={() => handleProductClick(item )}
+                        >
                             <div className="product-img">
                                
                                 <img src={BASEURL+"/files/"+item.file} />
