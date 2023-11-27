@@ -1,0 +1,9 @@
+.mytabcolor .nav-link {
+    color: #800; /* Set the color to your desired color */
+  }
+
+  .nav-pills {
+    --bs-nav-pills-border-radius: 0.2rem;
+  --bs-nav-pills-link-active-color:#fff;
+    --bs-nav-pills-link-active-bg: #800; /* Replace with your desired background color */
+  }
