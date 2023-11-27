@@ -1,7 +1,15 @@
 import { Modal } from "bootstrap"
-import { useState } from "react"
+import { useReducer, useState } from "react"
+let reducer = (state,action)=>{
+    switch(action.type){
+        case "ORDER":return action.payload
+
+        default : return state
+    }
+}
 
 export default function Practice() {
+const [state,dispatch] = useReducer(reducer,{})
 
     const [file,setFile] = useState()
 

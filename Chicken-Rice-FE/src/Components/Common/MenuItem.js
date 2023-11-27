@@ -64,6 +64,12 @@ export default [
       { to: "/purchase/supplier", name: "Supplier" ,permissionCode:"170",},
     ],
   },
+  {
+    name: "Kitchen Screen",
+    to: "/order-details",
+    permissionCode:"200",
+    icon: "bx bx-food-menu",
+  },
   
   {
     name: "HRMS",
