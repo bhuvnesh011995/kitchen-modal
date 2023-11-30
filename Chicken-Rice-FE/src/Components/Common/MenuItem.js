@@ -64,6 +64,13 @@ export default [
       { to: "/purchase/supplier", name: "Supplier" ,permissionCode:"170",},
     ],
   },
+
+  {
+    name: "queue display",
+    to: "/queuedisplay",
+    permissionCode:"180",
+    icon: "bx bxs-calendar-event",
+  },
   
   {
     name: "HRMS",
@@ -71,6 +78,8 @@ export default [
     permissionCode:"190",
     icon: "bx bxs-calendar-event",
   },
+
+
   {
     name: "Setup & Configration",
     to: "#",

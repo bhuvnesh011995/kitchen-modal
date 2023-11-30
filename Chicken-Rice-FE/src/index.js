@@ -66,10 +66,13 @@ import AnalyticsTools from './Pages/SetupConfigration/AnalyticsTools/AnalyticsTo
 import GoogleRecaptchaSettings from './Pages/SetupConfigration/GooglereCAPTCHASetting/GooglereCAPTCHASetting';
 import StartSession from './Pages/POS/POSOrder/StartSession';
 import POSMain from './Pages/POS/POSOrder/POSMain';
-
+import POSOrderSlipt from './Pages/POS/POSOrder/POSOrderSlip';
+import QueueDisplay from './Pages/KitchenManagement/queueDisplay/queueDisplay';
+import { CartProvider } from './Pages/POS/POSOrder/Reducer';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <AuthProvider>
+  <CartProvider>            
   <HashRouter>
 
     <Routes>
@@ -110,6 +113,10 @@ root.render(
       <Route path='/HRMS/staff/employee' element={<Common sidebar={"HRMS"}><Employees/></Common>}/>
       <Route path='/HRMS/staff/roles&privillage' element={<Common sidebar={"HRMS"}><RoleAndPrivillage/></Common>}/>
       {/* <Route path="practice" element={<Practice/>}/> */}
+
+      <Route path='/queuedisplay' element={<QueueDisplay/>}/>
+
+
       <Route path='/pos/dashboard' element={<PosDashboard/>}/>
       <Route path='/pos/productmodal' element={<ProductModal/>}/>
 
@@ -138,15 +145,15 @@ root.render(
       <Route path='/pos/recipt' element={<Recipt/>}/>
       <Route path='/pos/setting/orders' element={<SettingOrder/>}/>
       <Route path='/pos/checkout' element={<Checkout/>}/>
+      <Route path='/pos/posorderslipt' element={<POSOrderSlipt/>}/>
       <Route path="/pos/invoice" element={<Invoice/>}/>
       <Route path='/pos/refund' element={<Refund/>}/>
       <Route path='/pos/menu' element={<POS/>}/>
 
       </Routes>
   </HashRouter>
-  
+  </CartProvider>
   </AuthProvider>
-  
 );
 
 // If you want to start measuring performance in your app, pass a function

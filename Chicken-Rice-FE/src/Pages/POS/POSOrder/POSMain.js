@@ -6,43 +6,61 @@ import './POSDetail.css';
 import { useEffect } from 'react';
 import { getCategories } from '../../../utility/categories/category';
 import LeftPane from './leftpane';
+import { useCart } from './Reducer';
 export default function POSMain(){
      const [category, setCategory] =useState('All Dishes')
      const [showCategoryList , setShowCategoryList] = useState(false)
      const [product,setProduct] =useState([])
-     const [showProduct ,setShowProduct] = useState([])
-
      const [categories ,setCategories] = useState([])
+     const { shoppingCart, dispatch } = useCart();
 
+     const [currentQuantity, setCurrentQuantity] = useState(1);
 
-     console.log(product)
+     const handleProductClick = (item) => {
+        const existingCartItem = shoppingCart.find((cartItem) => cartItem.productId === item._id);
+        const quantityToAdd = currentQuantity ;
+        if (existingCartItem) {
+          dispatch({
+            type: 'UPDATE_CART_ITEM_QUANTITY',
+            payload: { productId: item._id, newQuantity: existingCartItem.quantity + quantityToAdd },
+          });
+        } else {
+          addToCart(item, quantityToAdd);
+        }
+      };
+      
+      const addToCart = (product, quantity) => {
+        const totalPrice = product.defaultPrice * quantity;
+
+        const cartItem = {
+          productId: product._id,
+          productName: product.productName,
+          price: product.defaultPrice,
+          quantity: quantity,
+          totalPrice: totalPrice,
+        };
+      
+        dispatch({ type: 'ADD_TO_CART', payload: cartItem });
+      };
+      
+     
+
+     console.log("product",shoppingCart)
 
        const handleCategoryClick = (category) =>{
-        alert(category)
            setCategory(category)
            setShowCategoryList(false)
        }
-    
-       const handleProductClick = (product) => {
-        setShowProduct((prevProducts) => {
-          const existingProductIndex = prevProducts.findIndex((p) => p._id === product._id);
+   
       
-          if (existingProductIndex !== -1) {
-            const updatedProducts = [...prevProducts];
-            updatedProducts[existingProductIndex].quantity += 1;
-            return updatedProducts;
-          } else {
-            return [...prevProducts, { ...product, quantity: 1 }];
-          }
-        });
-      };
-      
-
+  
        async function getAllProduct(){
           let res = await  getProduct()
           if(res.status === 200) setProduct(res.data.product)
           else setProduct([])
        }
+
+
   
        async function getAllCategory(){
         let res = await getCategories()
@@ -55,8 +73,6 @@ export default function POSMain(){
           getAllCategory()
        },[])
        const filteredProducts = category === 'All Dishes'? product: product.filter((product) => product.category.name === category);
-      console.log('filteredProducts',filteredProducts)
-
 
     return (
         <div id="content" >
@@ -70,7 +86,7 @@ export default function POSMain(){
                                     <div className="product-screen screen">
                                         <div className="screen-full-width row">
                                                                                          
-                                    <LeftPane   showProduct={showProduct} />
+                                    <LeftPane />
 
                                             <div className="rightpane ">
             <div className="products-widget">
@@ -104,7 +120,7 @@ export default function POSMain(){
                       </span>    
                           ) }             
                                       
-                                      {/* </div> */}
+                                    
                             </div>
                         </div>
                     </div>
@@ -112,8 +128,8 @@ export default function POSMain(){
                 <div className="product-list-container">
                     <div className="grid product-list">
 
-                      {filteredProducts.map((item)=>(  
-                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24"   onClick={() => handleProductClick(item )}
+                      {filteredProducts.map((item,index)=>(  
+                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24"   onClick={() => handleProductClick(item, index)}
                         >
                             <div className="product-img">
                                

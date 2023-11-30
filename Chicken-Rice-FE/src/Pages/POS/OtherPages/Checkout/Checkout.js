@@ -2,9 +2,40 @@ import Common from "../../../../Components/Common/POSCommon/Common";
 import cashIcon from "../../../../assets/Images/icons/cash.svg"
 import dabitCard from "../../../../assets/Images/icons/debitcard.svg"
 import bank from "../../../../assets/Images/icons/bank.png"
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function Checkout() {
+    const navigate = useNavigate()
+    const location = useLocation();
+    const { state } = location;
+    const totalAmount = state.totalAmount;
+    const shoppingCart = state.shoppingCart;
+    const [displayedNumber, setDisplayedNumber] = useState('');
+    const [totalAmounts, setTotalAmount] = useState({totalAmount});
+      console.log('totalAmount',totalAmount)
+
+    const handleButtonClick = (value) => {
+        if (value === 'backspace') {
+          setDisplayedNumber((prevNumber) => prevNumber.slice(0, -1));
+        } else if (value === '=') {
+          const change = parseFloat(displayedNumber) - totalAmounts;
+          alert(`Change: $${Math.max(0, change).toFixed(2)}`);
+          setDisplayedNumber('');
+        } else {
+          setDisplayedNumber((prevNumber) => prevNumber + value);
+        }
+      };
+
+      const change = displayedNumber ? parseFloat(displayedNumber) - totalAmount : 0;
+      console.log(displayedNumber)
+
+      const handlePayment = () => {
+        navigate('/pos/posorderslipt', { state: { payment: shoppingCart, totalAmounts: totalAmounts } });
+
+      };
+
     return (
-        // <div style={{height:"100vh",overflow:"hidden"}}>
         <Common>
             <div class="page-wrapper ms-0 mt-2">
 <div class="content">
@@ -42,8 +73,11 @@ export default function Checkout() {
             <div class="card-body">
                 <h5>Summary</h5>
                 <ul class="checkout-list-method">
-                    <li>Cash <span class="amount text-end">$20.19 </span> <a><i class="fa fa-times"></i></a></li>
-                </ul>
+    <li>
+      Cash <span className="amount text-end">${totalAmount}</span>
+      <a><i className="fa fa-times"></i></a>
+    </li>
+              </ul>
             </div>
         </div>
     </div>
@@ -53,100 +87,31 @@ export default function Checkout() {
                 <div class="paymentlines-container">
                     <div class="row">
                         <div class="col-md-6">
-                           <h5>Remaining $0.00</h5>
-                           <p>Total Due $20.13</p>
+                           <h5>Remaining ${displayedNumber}</h5>
+                           <p>Total Due ${totalAmount}</p>
                         </div>
                         <div class="col-md-6 text-end">
-                            <h5>Change $0.00</h5>
+                        <h5>Change: ${Math.max(0, change).toFixed(2)}</h5>
                         </div>
                     </div>
                 </div>
-                <div class="row no-gutters">
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">1</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">2</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">3</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark ">+10</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">4</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">5</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">6</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">  +20</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">7</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">8</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">9</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark"><span>+50</span></button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">+/-</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">0</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark">.</button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="num-pad-button num-pad-checkout-btn">
-                            <button class="btn btn-number w-100 text-dark"><i class="fas fa-backspace"></i></button>
-                        </div>
-                    </div>
-                
-                </div>
+
+                <div className="row no-gutters">
+      {[1, 2, 3, '+10', 4, 5, 6, '+20', 7, 8, 9, '+50', '+/-', 0, '.', 'backspace'].map((value, index) => (
+        <div key={index} className="col-md-3">
+          <div className="num-pad-button num-pad-checkout-btn">
+            <button className="btn btn-number w-100 text-dark" onClick={() => handleButtonClick(value)}>
+              {value === 'backspace' ? <i className="fas fa-backspace"></i> : value}
+            </button>
+          </div>
+        </div>
+      ))}
+    
+    </div>
+               
             </div>
         </div>
-        <a class="btn btn-primary w-100 btn-lg">Proceed To Payment</a>
+        <a class="btn btn-primary w-100 btn-lg" onClick={handlePayment}>Proceed To Payment</a>
           
     </div>
     <div class="col-md-3">
