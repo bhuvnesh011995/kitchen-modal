@@ -53,10 +53,11 @@ exports.updateCategory = async function (req,res,next){
 
         let isExist = await db.categories.exists({_id:id})
         
-        if(!isExist) return res.status(400).json({
-            success:false,
-            message:"no category exist"
-        })
+        if(!isExist){
+            let err = new Error("no category exist!")
+            err.status = 400
+            throw err
+        }
 
         let obj = {}
         if(name) obj.name = name
@@ -69,11 +70,7 @@ exports.updateCategory = async function (req,res,next){
         res.status(201).end()
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+        next(error)
     }
 }
 
@@ -88,8 +85,6 @@ exports.delateCategory = async function(req,res,next){
             success:false,
             message:"no category exist"
         })
-
-        await db.subcategory.deleteMany({category:id})
 
         await db.categories.deleteOne({_id:id})
 
