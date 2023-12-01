@@ -109,17 +109,8 @@ return console.info('superadmin created for the role of superadmin')
 
   //using routes
 
-  require("./routes/user.route")(app)
-  require("./routes/role.route")(app)
-  require("./routes/auth.route")(app)
-  require("./routes/category.route")(app)
-  require("./routes/recipe.route")(app)
-  require("./routes/fixed.route")(app)
-  require("./routes/product.route")(app)
-  require("./routes/qrbuildertable.route")(app)
-  require("./routes/language.route")(app)
-  require("./routes/currency.route")(app)
-  require("./routes/allOrder.route")(app)
+  require("./routes")(app)
+  app.use(require("./middleware/errorHandler.middleware"))
 
 
 
