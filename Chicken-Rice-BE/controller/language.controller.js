@@ -1,5 +1,5 @@
 const db = require("../models")
-const { craete_error } = require("../utility/createError")
+const { create_error } = require("../utility/createError")
 
 exports.addLanguage = async function(req,res,next){
     const {name,code} = req.body
@@ -73,7 +73,7 @@ exports.deleteLanguage = async function(req,res,next){
          
         let isExist = await db.language.exists({_id:id})
         
-        if(!isExist) throw craete_error(400,"language does not exist!")
+        if(!isExist) throw create_error(400,"language does not exist!")
   
         let obj = {}
         if(name) obj.name = name
