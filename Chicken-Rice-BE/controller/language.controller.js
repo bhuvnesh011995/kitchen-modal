@@ -3,21 +3,16 @@ const { create_error } = require("../utility/createError")
 
 exports.addLanguage = async function(req,res,next){
     const {name,code} = req.body
-    console.log(req.body)
-    try {
-        let obj = {}
 
-        if(name) obj.name = name
-        if(code) obj.code =code
-        await db.language.create(obj)
-        res.status(201).end()
+    try {
+        
+        if(!name || !code) throw create_error(400,`${!name?"name":"code"} is mandatory !`)
+
+        let language = await db.language.create({name,code})
+        res.status(200).end(language)
         
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+        next(error)
     }
 }
 
@@ -27,12 +22,9 @@ exports.getLanguage = async function(req,res,next){
     try {
         let language = await db.language.find()
 
-        if(!language || !language.length) return res.status(201).end()
         
-        res.status(200).json({
-            success:true,
-            language
-        })
+        
+        res.status(200).json(language)
     } catch (error) {
         console.error(error)
 

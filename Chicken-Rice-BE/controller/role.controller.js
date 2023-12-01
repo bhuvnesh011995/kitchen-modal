@@ -18,12 +18,9 @@ exports.addRole = async function(req,res,next){
 
         if(permissions) obj.permissions = permissions
         
-        await db.roles.create(obj)
+        let role = await db.roles.create(obj)
 
-        res.status(200).json({
-            success:true,
-            message:"role is created"
-        })
+        res.status(200).json(role)
     }catch(error){
         console.error(error), res.status(500).json({success:false,message:"something went wrong"})
     }
@@ -32,14 +29,14 @@ exports.addRole = async function(req,res,next){
 
 exports.getAllRoles = async function(req,res,next){
     try{
-        let roles = await db.roles.find({}).select("name permissions createdAt")
+        let roles = await db.roles.find({}).select("name createdAt")
 
         res.status(200).json({
             success:true,
             roles
         })
     }catch(error){
-        console.error(error), res.status(500).json({success:false,message:"something went wrong"})
+        naxt(error)
     }
 }
 
@@ -59,14 +56,13 @@ exports.updateRole = async function(req,res,next){
     if(name) obj.name = name
     if(permissions) obj.permissions = permissions
 
-    await db.roles.findOneAndUpdate({_id:id},obj)
+    const roleData = await db.roles.findOneAndUpdate({_id:id},{
+        $set:obj
+    },{new:true}).select("name")
 
-    res.status(200).json({
-        success:true,
-        message:"role updated"
-    })
+    res.status(200).json(roleData)
 }catch(error){
-    console.error(error), res.status(500).json({success:false,message:"something went wrong"})
+next(error)
 }
 }
 
@@ -81,13 +77,11 @@ exports.deleteRole = async function(req,res,next){
             message:"no role found"
         })
 
-        await db.users.deleteMany({role:id})
-
         await db.roles.findOneAndDelete({_id:id})
-        res.status(201).end()
+        res.status(204).end()
 
 }catch(error){
-    console.error(error), res.status(500).json({success:false,message:"something went wrong"})
+    next(error)
 }
 }
 
@@ -110,5 +104,16 @@ exports.getPermissions= async function(req,res,next){
             success:false,
             message:"some error occured"
         })
+    }
+}
+
+exports.getPermissionsById = async (req,res,next)=>{
+    try {
+        let {id} = req.params
+        let role = await db.roles.findById(id)
+
+        res.status(200).json(role.permissions)
+    } catch (error) {
+        next(error)
     }
 }

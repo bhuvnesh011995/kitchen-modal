@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { getAllRole } from "../../../../utility/role/role";
 import { signup } from "../../../../utility/auth/auth";
+import useCustomEffect from "../../../../utility/CustomHook/useCustomEffect";
 
 
 export default function AddNewEmployee({ show, setShow,getAllUser }) {
@@ -33,9 +34,7 @@ export default function AddNewEmployee({ show, setShow,getAllUser }) {
     
   }
 
-  useEffect(()=>{
-    getRoles()
-  },[])
+  useCustomEffect(getRoles)
 
   async function handleSubmit(e){
     e.preventDefault();

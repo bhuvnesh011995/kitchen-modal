@@ -1,7 +1,8 @@
 import { Modal } from "react-bootstrap";
 import TreeCheckbox from "./TreeCheckbox";
-import { useState } from "react";
-import { addRole } from "../../../utility/role/role";
+import { useEffect, useState } from "react";
+import {  getPermissionsById } from "../../../utility/role/role";
+import { toast } from "react-toastify";
 
 let data = [
     {value:"All",label:"Resourses",children:[
@@ -167,21 +168,40 @@ let data = [
     ]}
 ]
 
-export default function AddNew({getRoles,show,setShow}) {
+export default function AddNew({addRole,updateRole,updateData,setUpdateData,getRoles,show,setShow}) {
     const [name,setName] = useState("")
     const [checked,setChecked] = useState(["10"])
+    const [ready,setReady] = useState(false)
 
+    useEffect(()=>{
+        if(ready && updateData) getPermissions(updateData._id)
+        else setReady(true)
+        return ()=>{
+            if(ready) setUpdateData(null)
+        }
+    },[ready])
+
+    async function getPermissions(id){
+        try {
+         
+            let res = await getPermissionsById(id)
+           
+            if(res.status===200) setChecked(res.data)
+            else toast.error("error occured while fetching permissions")
+        } catch (error) {
+            toast.error('error occured while fetching')
+        }
+    }
     async function handleSubmit(e){
         e.preventDefault();
         try {
-            let response = await addRole({name:name,permissions:checked})
-
-            if(response.success){
-                setShow(false)
-                setName("")
-                setChecked([])
-                getRoles()
-            }
+            if(!updateData) addRole({name:name,permissions:checked})
+            else{
+                let obj ={permissions:checked}
+                if(name) obj.name = name
+         updateRole(updateData._id,obj)
+        }
+          
         } catch (error) {
             console.log(error)
         }
@@ -199,7 +219,7 @@ export default function AddNew({getRoles,show,setShow}) {
           <div className="row">
                                 <div className="col-md-6 mb-2">
                                     <label for="">Role Name</label>
-                                    <input onChange={e=>setName(e.target.value)} type="text" value={name} className="form-control" placeholder=""/>
+                                    <input onChange={e=>setName(e.target.value)} type="text" value={name || updateData?.name} className="form-control" placeholder=""/>
                                 </div>
                                 <div className="col-md-12">
                                     <label for="">Resources</label>

@@ -70,9 +70,13 @@ import POSOrderSlipt from './Pages/POS/POSOrder/POSOrderSlip';
 import QueueDisplay from './Pages/KitchenManagement/queueDisplay/queueDisplay';
 import { CartProvider } from './Pages/POS/POSOrder/Reducer';
 import KitchenScreen from './Pages/KitchenScreen/KitchenScreen';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<AuthProvider>
+  <>
+  <ToastContainer/>
+  <AuthProvider>
   <CartProvider>            
   <HashRouter>
 
@@ -155,6 +159,9 @@ root.render(
   </HashRouter>
   </CartProvider>
   </AuthProvider>
+  
+  </>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

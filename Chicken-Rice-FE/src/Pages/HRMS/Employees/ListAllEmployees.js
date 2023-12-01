@@ -5,16 +5,14 @@ import { Button } from "react-bootstrap"
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { getAllEmployee } from "../../../utility/employee/empolyee";
 import AddNewEmployee from "./Modals/AddNewEmployee";
+import useCustomEffect from "../../../utility/CustomHook/useCustomEffect";
 
 
 export default function ListAllEmployees() {
   const [isOpen,setIsOpen] = useState(false)
 const [data,setData] = useState([])
-const [error,setError] = useState(false)
   const [isLoading,setIsLoading] = useState(false)
-useEffect(()=>{
-  getAllUser()
-},[])
+useCustomEffect(getAllUser)
 
   async function getAllUser(){
     try {
@@ -34,7 +32,6 @@ useEffect(()=>{
       }else if(response.status===201){setData([]);setIsLoading(false)}
       else if (response.status===400 || response.status===401 || response.status===402 || response.status===404){
         setData([])
-      setError(true)
       setIsLoading(false)
       }
     } catch (error) {
@@ -67,7 +64,7 @@ let columns = useMemo(()=>[
     return(
         <div className="card">
             <div className="card-body">
-            {isOpen && <AddNewEmployee getAllUser={getAllUser} show={isOpen} setShow={setIsOpen}/>}
+            {isOpen && <AddNewEmployee show={isOpen} setShow={setIsOpen}/>}
                 <h4>All Employees List</h4>
                 <div className="d-flex justify-content-end me-5">
                     <Button onClick={()=>{

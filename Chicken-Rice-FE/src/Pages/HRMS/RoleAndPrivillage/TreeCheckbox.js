@@ -4,17 +4,15 @@ import { useState } from 'react';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 
 export default function TreeCheckbox({check,setCheck,data}) {
-
-    const [checked, setChecked] = useState(check);
     const [expanded, setExpanded] = useState([]);
 
     
     return(
         <CheckboxTree 
         nodes={data}
-        checked={checked}
+        checked={check}
         expanded={expanded}
-        onCheck={(checked) => {setChecked(checked);setCheck(checked)}}
+        onCheck={(checked) => {setCheck(checked)}}
         onExpand={(expanded) => setExpanded(expanded)}
         icons={{
             check:<i className='dripicons-checkmark '></i>,
