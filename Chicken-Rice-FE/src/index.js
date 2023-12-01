@@ -69,6 +69,7 @@ import POSMain from './Pages/POS/POSOrder/POSMain';
 import POSOrderSlipt from './Pages/POS/POSOrder/POSOrderSlip';
 import QueueDisplay from './Pages/KitchenManagement/queueDisplay/queueDisplay';
 import { CartProvider } from './Pages/POS/POSOrder/Reducer';
+import KitchenScreen from './Pages/KitchenScreen/KitchenScreen';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <AuthProvider>
@@ -92,7 +93,7 @@ root.render(
       <Route path='/order/posOrder' element={<Common><PosOrder/></Common>}/>
       <Route path='/order/mobileOrder' element={<Common><MobileOrder/></Common>}/>
 
-
+      <Route path='/order-details' element={<KitchenScreen />}/>
       <Route path='/qrbuilder' element={<Common><QrBuilder/></Common>}/>
       <Route path='/qrcodegenerator' element={<Common><QrCodeGenerator/></Common>}/>
       <Route path='/management/recipe' element={<Common><Recipe/></Common>}/>

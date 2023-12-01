@@ -64,12 +64,17 @@ export default [
       { to: "/purchase/supplier", name: "Supplier" ,permissionCode:"170",},
     ],
   },
-
   {
     name: "queue display",
     to: "/queuedisplay",
     permissionCode:"180",
     icon: "bx bxs-calendar-event",
+  },
+  {
+    name: "Kitchen Screen",
+    to: "/order-details",
+    permissionCode:"200",
+    icon: "bx bx-food-menu",
   },
   
   {
