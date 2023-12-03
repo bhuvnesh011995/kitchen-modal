@@ -14,54 +14,49 @@ export default function POSMain(){
      const [categories ,setCategories] = useState([])
      const { shoppingCart, dispatch } = useCart();
 
-     const [currentQuantity, setCurrentQuantity] = useState(1);
+     const [currentQuantity] = useState(1);
 
-     const handleProductClick = (item) => {
-        const existingCartItem = shoppingCart.find((cartItem) => cartItem.productId === item._id);
-        const quantityToAdd = currentQuantity ;
-        if (existingCartItem) {
-          dispatch({
-            type: 'UPDATE_CART_ITEM_QUANTITY',
-            payload: { productId: item._id, newQuantity: existingCartItem.quantity + quantityToAdd },
-          });
-        } else {
-          addToCart(item, quantityToAdd);
-        }
-      };
+    //  const handleProductClick = (item) => {
+    //     const existingCartItem = shoppingCart.find((cartItem) => cartItem.productId === item._id);
+    //     const quantityToAdd = currentQuantity ;
+    //     if (existingCartItem) {
+    //         const quantity = existingCartItem.quantity + quantityToAdd;
+    //         const totalPrice = item.defaultPrice * quantity;
+        
+    //         dispatch({
+    //           type: 'UPDATE_CART_ITEM_QUANTITY',
+    //           payload: { productId: item._id, quantity: quantity, totalPrice: totalPrice },
+    //         });
+    //       } else {
+    //         addToCart(item, quantityToAdd);
+    //       }
+    //     };
       
-      const addToCart = (product, quantity) => {
-        const totalPrice = product.defaultPrice * quantity;
+    //   const addToCart = (product, quantity) => {
+    //     const totalPrice = product.defaultPrice * quantity;
 
-        const cartItem = {
-          productId: product._id,
-          productName: product.productName,
-          price: product.defaultPrice,
-          quantity: quantity,
-          totalPrice: totalPrice,
-        };
+    //     const cartItem = {
+    //       productId: product._id,
+    //       productName: product.productName,
+    //       price: product.defaultPrice,
+    //       quantity: quantity,
+    //       totalPrice: totalPrice,
+    //     };
       
-        dispatch({ type: 'ADD_TO_CART', payload: cartItem });
-      };
+    //     dispatch({ type: 'ADD_TO_CART', payload: cartItem });
+    //   };
       
-     
-
-     console.log("product",shoppingCart)
-
        const handleCategoryClick = (category) =>{
            setCategory(category)
            setShowCategoryList(false)
        }
-   
-      
-  
+
        async function getAllProduct(){
           let res = await  getProduct()
           if(res.status === 200) setProduct(res.data.product)
           else setProduct([])
        }
 
-
-  
        async function getAllCategory(){
         let res = await getCategories()
         if(res.status === 200) setCategories(res.data.categories)
@@ -72,6 +67,7 @@ export default function POSMain(){
           getAllProduct()
           getAllCategory()
        },[])
+
        const filteredProducts = category === 'All Dishes'? product: product.filter((product) => product.category.name === category);
 
     return (
@@ -129,7 +125,7 @@ export default function POSMain(){
                     <div className="grid product-list">
 
                       {filteredProducts.map((item,index)=>(  
-                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24"   onClick={() => handleProductClick(item, index)}
+                        <article tabIndex="0" className="product grid" data-product-id="24" aria-labelledby="article_product_24" onClick={() => dispatch({ type: 'ADD_TO_CART', payload: item })}
                         >
                             <div className="product-img">
                                

@@ -13,7 +13,7 @@ export default function Checkout() {
     const shoppingCart = state.shoppingCart;
     const [displayedNumber, setDisplayedNumber] = useState('');
     const [totalAmounts, setTotalAmount] = useState({totalAmount});
-      console.log('totalAmount',totalAmount)
+      console.log('totalAmount',shoppingCart)
 
     const handleButtonClick = (value) => {
         if (value === 'backspace') {

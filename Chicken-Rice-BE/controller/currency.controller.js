@@ -14,11 +14,7 @@ exports.addCurrency = async function(req,res,next){
         res.status(201).end()
         
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+       next(error)
     }
 }
 
