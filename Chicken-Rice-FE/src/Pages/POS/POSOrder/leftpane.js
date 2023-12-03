@@ -6,17 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 export default function LeftPane() {
    const { shoppingCart,dispatch } = useCart({});
-   const [clickedItems, setClickedItems] = useState([]);
    const navigate=useNavigate()
 
    const handleNavigate = () => {
-  
-    const shoppingCartWithAllTotal = shoppingCart.map(item => ({
-      ...item,
-      allTotalPrice: totalAmount,
-    }));
-
-    navigate('/pos/checkout', { state: { shoppingCart: clickedItems,totalAmount:totalAmount } });
+    navigate('/pos/checkout', { state: { shoppingCart: shoppingCart,totalAmount:totalAmount, } });
   };
   
 
@@ -26,41 +19,8 @@ export default function LeftPane() {
   const totalAmount = shoppingCart.reduce((total, item) => total + item.price * item.quantity , 0);
 
 
-  const handleItemClick = (item) => {
-    const isAlreadyClicked = clickedItems.some((cartItem) => cartItem.productId === item.productId);
-  
-    if (!isAlreadyClicked) {
-      setClickedItems((prevClickedItems) => [...prevClickedItems, item]);
-    }
-  };
-  
-
-  console.log('Clicked items:', clickedItems);
 
   
-  // const handleMinusClick = (item) => {
-  //   if (item.quantity > 1) {
-  //     const quantity = item.quantity - 1;
-  //     const totalPrice = item.price * quantity;
-  //     dispatch({
-  //       type: 'UPDATE_CART_ITEM_QUANTITY',
-  //       payload: { productId: item.productId, quantity: quantity, totalPrice: totalPrice },
-  //     });
-  //   } else {
-  //     const filterProducts = shoppingCart.filter(Cart=>Cart.productId !=  item.productId)
-  //   dispatch({ type: 'UPDATE_CART', payload: filterProducts });
-  //   }
-  // };
-  
-  // const handlePlusClick = (item) => {
-  //   const quantity = item.quantity + 1;
-  //   const totalPrice = item.price * quantity;
-  
-  //   dispatch({
-  //     type: 'UPDATE_CART_ITEM_QUANTITY',
-  //     payload: { productId: item.productId, quantity: quantity, totalPrice: totalPrice },
-  //   });
-  // };
 
   return (
     <div className="leftpane pane-border" >
@@ -69,7 +29,7 @@ export default function LeftPane() {
             <ul className="orderlines">
                 <li className="orderline ">
                 {shoppingCart.map((item) => (
-    <div key={item.productId} className="row orderline  selected has-change justify-content-end align-items-center"     onClick={() => handleItemClick(item)}    style={{marginTop:'2%'}}>
+    <div key={item.productId} className="row orderline  selected has-change justify-content-end align-items-center"        style={{marginTop:'2%'}}>
     <div className="col-md-4">{item.productName}</div>  
     <div className="col-md-4 d-flex justify-content-end align-items-center">
 
