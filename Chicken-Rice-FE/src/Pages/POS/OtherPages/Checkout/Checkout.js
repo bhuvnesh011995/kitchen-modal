@@ -13,20 +13,9 @@ export default function Checkout() {
     const shoppingCart = state.shoppingCart;
     const [displayedNumber, setDisplayedNumber] = useState('');
     const [totalAmounts, setTotalAmount] = useState({totalAmount});
-      console.log('totalAmount',totalAmount)
+      console.log('totalAmount',shoppingCart)
 
-    const handleButtonClick = (value) => {
-        if (value === 'backspace') {
-          setDisplayedNumber((prevNumber) => prevNumber.slice(0, -1));
-        } else if (value === '=') {
-          const change = parseFloat(displayedNumber) - totalAmounts;
-          alert(`Change: $${Math.max(0, change).toFixed(2)}`);
-          setDisplayedNumber('');
-        } else {
-          setDisplayedNumber((prevNumber) => prevNumber + value);
-        }
-      };
-
+   
       const change = displayedNumber ? parseFloat(displayedNumber) - totalAmount : 0;
       console.log(displayedNumber)
 
@@ -100,7 +89,7 @@ export default function Checkout() {
       {[1, 2, 3, '+10', 4, 5, 6, '+20', 7, 8, 9, '+50', '+/-', 0, '.', 'backspace'].map((value, index) => (
         <div key={index} className="col-md-3">
           <div className="num-pad-button num-pad-checkout-btn">
-            <button className="btn btn-number w-100 text-dark" onClick={() => handleButtonClick(value)}>
+            <button className="btn btn-number w-100 text-dark">
               {value === 'backspace' ? <i className="fas fa-backspace"></i> : value}
             </button>
           </div>

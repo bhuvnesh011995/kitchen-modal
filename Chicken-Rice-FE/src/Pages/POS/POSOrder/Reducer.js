@@ -4,66 +4,69 @@ const CartContext = createContext();
 
 const initialState = [];
 
-const calculateItemTotal = (item) => {
-  return item.quantity * item.totalPrice;
-};
 
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
-      return [...state, action.payload];
+      const existingCartItemIndex = state.findIndex((cartItem) => cartItem.productId === action.payload._id); 
+      if (existingCartItemIndex !== -1) {
+        const updatedCart = state.map((item, index) => {
+          if (index === existingCartItemIndex) {
+            return {
+              ...item,
+              quantity: item.quantity + 1,
 
-
-      case 'UPDATE_QUANTITY':
-      const { productId, quantity } = action.payload;
-      const updatedShoppingCart = state.map(item => {
-        if (item.productId === productId) {
-          const updatedItem = { ...item, quantity };
-          updatedItem.total = calculateItemTotal(updatedItem);
-          return updatedItem;
-        }
-        return item;
-      });
-      return updatedShoppingCart;
-
+            };
+          }
+          return item;
+        });
     
-      // case 'UPDATE_SHOPPING_CART_QUANTITY':
-      //   const updatedShoppingCart = state.shoppingCart.map((item) => {
-      //     if (item.productId === action.payload.productId) {
-      //       return {
-      //         ...item,
-      //         quantity: action.payload.quantity,
-      //       };
-      //     }
-      //     return item;
-      //   });
-      //   console.log('Updated Shopping Cart:', updatedShoppingCart);
+        return updatedCart;
+      } else {
+        return [
+          ...state,
+          {
+            productId: action.payload._id,
+            productName: action.payload.productName,
+            price: action.payload.defaultPrice,
+            quantity: 1,
+          },
+        ];
+      }
 
-      //   return {
-      //     ...state,
-      //     shoppingCart: updatedShoppingCart,
+      case 'increaseQuentity':
+        return state.map((item) =>
+          item.productId === action.payload
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
 
-      //   };
- 
+        case 'decreaseQuentity':
+          return state.map((item) =>
+            item.productId === action.payload
+              ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+              : item
+          ).filter((item) => item.quantity > 0);    
+       
+      case 'REMOVE_FROM_CART':
         
-      
-    // case 'UPDATE_CART_ITEM_QUANTITY':
-    //   console.log('removedProductId', action.payload )
+      return state.filter((item) => item.productId  !== action.payload);
 
-    //   const { productId, newQuantity } = action.payload;
-    //   const updatedCart = state.map(item =>
-    //     item.productId === productId ? { ...item, quantity: newQuantity } : item
-    //   );
-    //   console.log('updatedCart',updatedCart )
-           
-    //   return updatedCart;
+
+      case 'UPDATE_CART_ITEM_QUANTITY':
+        console.log('quentity',action.payload)
+        const { productId, quantity, totalPrice } = action.payload;
+        const updatedShoppingCart = state.map((item) => {
+          if (item.productId === productId) {
+            return { ...item, quantity: quantity ,totalPrice: totalPrice }; 
+          }
+          return item;
+        });
+        console.log('updatedShoppingCart',updatedShoppingCart)
+        return updatedShoppingCart;
 
     case 'UPDATE_CART':
       return [...action.payload];
-
-  
-        
-
 
     default:
       return state;

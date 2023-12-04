@@ -6,7 +6,7 @@ export default function POSOrderSlipt(){
     const totalAmounts = state.totalAmounts;
     const Paymentslipt = state.payment;
     const totalAmount = totalAmounts.totalAmount;
-    console.log("totalAmounts",totalAmount)
+    console.log("Paymentslipt",Paymentslipt)
 
   return (
     <div id="invoice-POS">
@@ -58,7 +58,7 @@ export default function POSOrderSlipt(){
   <tr className="service"  key={item.productId}>
       <td className="tableitem"><p className="itemtext">{item.productName}</p></td>
       <td className="tableitem"><p className="itemtext">{item.quantity}</p></td>
-      <td className="tableitem"><p className="itemtext">${item.totalPrice.toFixed(2)}</p></td>
+      <td className="tableitem"><p className="itemtext">$</p></td>
               </tr>  ))}
 
               {/* Add more rows as needed */}
