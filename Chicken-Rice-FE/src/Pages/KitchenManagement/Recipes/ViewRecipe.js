@@ -5,16 +5,42 @@ import 'react-quill/dist/quill.snow.css';
 import BASEURL from "../../../Config/Config";
 import { getCategories } from "../../../utility/recipe/recipe";
 import { useEffect } from "react";
+import { getaddons } from "../../../utility/Addons/addons";
+import Select from 'react-select'
 
 
-export default function ViewProduct({show,setShow , selectedProduct})
+export default function ViewRecipe({show,setShow , selectedProduct})
  {
     const [selectedImage, setSelectedImage] = useState(BASEURL + "/files/" + selectedProduct.productFile);
     const [product,setProduct] = useState({...selectedProduct})
     const [categories,setCategories] = useState([])
 
- 
+  console.log('Produce',product)
 
+    const [addons,setAddons] = useState([])
+    async function getAllAddons(){
+        let res =await getaddons()
+        if(res.status === 200) setAddons(res.data.addons)
+        else setAddons([])
+    }
+    useEffect(()=>{
+      getAllAddons()
+  },[])
+
+      const addonsOptions = addons.map((ele, i) => ({
+        value:ele.addonsName, 
+        label: ele.addonsName,
+      }));
+
+      const handleAddons = (selectedOptions) => {  
+        const selectAddons = selectedOptions.map((option) => option.value);
+        setProduct({
+          ...product,
+          addonsName: selectAddons, 
+        });
+      };
+  
+    
 
 
 
@@ -50,7 +76,7 @@ export default function ViewProduct({show,setShow , selectedProduct})
     return(
         <Modal size="lg" show={show} onHide={() => setShow(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Details Product</Modal.Title>
+            <Modal.Title>Details Recipe</Modal.Title>
           </Modal.Header>
     
           <Modal.Body>
@@ -60,7 +86,7 @@ export default function ViewProduct({show,setShow , selectedProduct})
                         <div className="col-md-6">
                             <div className="mb-3">
                                 <label for="">Product Name</label>
-                                <input        disabled={selectedProduct.productName}   type="text" className="form-control" placeholder=""  value={selectedProduct.productName}   />
+                                <input        disabled={selectedProduct.recipeName}   type="text" className="form-control" placeholder=""  value={selectedProduct.recipeName}   />
                             </div>
                         </div> 
                         <div className="col-md-4">
@@ -76,7 +102,7 @@ export default function ViewProduct({show,setShow , selectedProduct})
   style={{marginTop:'8px'}}
 />
             </span>
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label for="">category</label>
                                 <select
@@ -96,7 +122,25 @@ export default function ViewProduct({show,setShow , selectedProduct})
                             </div>
                         </div>
                        
-                        <div className="col-md-6">
+                        <div className="col-md-4">
+                            <div className="mb-3">
+
+                                <label for="">addons name</label><span className="text-danger">*</span>
+                                <Select
+                  required
+                  isMulti
+                  disabled={product.addonsName}
+                  isDisabled={product.addonsName}
+                  value={product.addonsName
+                    ? addonsOptions.filter((option) => product.addonsName.includes(option.value))
+                    : []}
+                  options={addonsOptions}
+                />
+      
+                            </div>
+                        </div>
+
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label  for=""> Price</label>
                                 <input required type="text" className="form-control" placeholder=""    disabled={selectedProduct.defaultPrice} value={selectedProduct.defaultPrice}   />
@@ -116,7 +160,7 @@ export default function ViewProduct({show,setShow , selectedProduct})
   theme="snow"
   value={product.ingredients} 
   modules={modules}
-  style={{ height: '114px', width: '100%' }}
+  style={{ height: '100px', width: '100%' }}
 />
 
                             </div>

@@ -6,7 +6,8 @@ import axios from "axios";
 import BASEURL from "../../../Config/Config";
 import { getCategories } from "../../../utility/recipe/recipe";
 import { useEffect } from "react";
-
+import { getaddons } from "../../../utility/Addons/addons";
+import Select from 'react-select'
 
 let initialState= {
 
@@ -14,13 +15,16 @@ let initialState= {
     category: "",
     ingredients: "",
     defaultPrice:"",
-     file: null
+    addonsName: [],
+        file: null
 }
 
-export default function AddNewProduct({show,setShow,getAllProduct}) {
+export default function AddNewRecipe({show,setShow,getAllProduct}) {
     const [product,setProduct] = useState(initialState)
     const [categories,setCategories] = useState([])
-  console.log("ppppppp",product)
+    const [addons, setAddons] = useState([]);
+
+    console.log('product',product)
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -62,10 +66,36 @@ console.log(error)
         if(res.status === 200) setCategories(res.data.categories)
         else setCategories([])
     }
+    async function getAllAddons(){
+      let res = await getaddons()
+      if(res.status === 200) setAddons(res.data.addons)
+      else setAddons([])
+  }
 
+  const addonsOptions = addons.map((addon) => ({
+    label: addon.addonsName,
+    value: addon.addonsName,
+  }));
+    
+    const handleAddons = (selectedOptions) => {
+      console.log('selectedOptions',selectedOptions)
+
+      const selectAddons = selectedOptions.map((option) => option.value);
+      console.log('selectAddons',selectAddons)
+      setProduct({
+        ...product,
+        addonsName: selectAddons, 
+      });
+    };
+
+  
+   
     useEffect(()=>{
         getAllCategory()
+        getAllAddons()
     },[])
+
+
 
     const modules = {
       toolbar: {
@@ -74,7 +104,7 @@ console.log(error)
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
           ['link', 'image', 'video'],
           [{ 'color': [] }],
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Added array of header options
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }], 
           ['clean'],
         ],
       },
@@ -83,7 +113,7 @@ console.log(error)
     return(
         <Modal size="lg" show={show} onHide={() => setShow(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Add New Product</Modal.Title>
+            <Modal.Title>Add New Recipe</Modal.Title>
           </Modal.Header>
     
           <Modal.Body>
@@ -92,8 +122,8 @@ console.log(error)
                        
                         <div className="col-md-6">
                             <div className="mb-3">
-                                <label for="">Product Name</label> <span className="text-danger">*</span>
-                                <input required type="text" className="form-control" placeholder=""   value={product.productName}  onChange={e=>setProduct(preVal=>({...preVal,productName:e.target.value}))}   />
+                                <label for="">Recipe Name</label> <span className="text-danger">*</span>
+                                <input required type="text" className="form-control" placeholder=""   value={product.recipeName}  onChange={e=>setProduct(preVal=>({...preVal,recipeName:e.target.value}))}   />
                             </div>
                         </div> 
                         <div className="col-md-6">
@@ -102,7 +132,21 @@ console.log(error)
                                 <input  required onChange={e=>setProduct(preVal=>({...preVal,file:e.target.files[0]}))}  type="file" className="form-control" placeholder="" />
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-4">
+                            <div className="mb-3">
+                                <label for="">Addons Name</label><span className="text-danger">*</span>
+                                <Select required
+      isMulti
+      value={product.addonsName ? addonsOptions.filter((option) => product.addonsName.includes(option.value)) : []}
+      onChange={handleAddons}
+      options={addonsOptions}
+    />
+
+
+
+                                 </div>
+                        </div>
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label for="">category</label> <span className="text-danger">*</span>
                                 <select required
@@ -123,7 +167,7 @@ console.log(error)
                        
                    
                 
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label  for=""> Price</label> 
                                 <input  type="number" className="form-control" placeholder=""   value={product.defaultPrice}  onChange={e=>setProduct(preVal=>({...preVal,defaultPrice:e.target.value}))} />

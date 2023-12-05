@@ -9,5 +9,5 @@ module.exports = {
      language:require("./language.model"),
      currency:require("./currency.model"),
      allOrder:require("./allOrder.model"),
-
+     addons:require("./addons.model")
     }

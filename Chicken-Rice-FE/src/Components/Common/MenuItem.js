@@ -18,7 +18,9 @@ export default [
     icon: "bx bx-store",
     children: [
       { to: "/management/category", name: "category" ,permissionCode:"15",},
-      { to: "/management/product", name: "Product" ,permissionCode:"35",},
+      { to: "/management/recipe", name: "Recipe" ,permissionCode:"35",},
+      { to: "/management/addons", name: "Addons" ,permissionCode:"20",},
+
     ],
   },
   {

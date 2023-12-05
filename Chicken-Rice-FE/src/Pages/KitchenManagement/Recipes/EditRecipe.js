@@ -6,13 +6,41 @@ import { getCategories } from "../../../utility/recipe/recipe";
 import axios from "axios";
 import BASEURL from "../../../Config/Config";
 import { useEffect } from "react";
+import { getaddons } from "../../../utility/Addons/addons";
+import Select from 'react-select'
 
-
-export default function EditProduct({show,setShow , selectedProduct,getAllProduct})
+export default function EditRecipe({show,setShow , selectedProduct,getAllProduct})
  {
   const [selectedImage, setSelectedImage] = useState(BASEURL + "/files/" + selectedProduct.productFile);
+
 const [categories,setCategories] = useState([])
 const [product,setProduct] = useState({...selectedProduct})
+const [addons,setAddons] = useState([])
+async function getAllAddons(){
+    let res =await getaddons()
+    if(res.status === 200) setAddons(res.data.addons)
+    else setAddons([])
+}
+useEffect(()=>{
+  getAllAddons()
+},[])
+
+  const addonsOptions = addons.map((ele, i) => ({
+    value:ele.addonsName, 
+    label: ele.addonsName,
+  }));
+
+  const handleAddons = (selectedOptions) => {
+
+    const selectAddons = selectedOptions.map((option) => option.value);
+    setProduct({
+      ...product,
+      addonsName: selectAddons, 
+    });
+  };
+
+
+ 
 
 const handleImageChange = (e) => {
   setProduct({ ...product, productFile: e.target.files[0] });
@@ -49,9 +77,11 @@ const handleImageChange = (e) => {
       const dataToSend = new FormData();
       dataToSend.append("file", product.productFile);
       dataToSend.append("category", product.category);
-      dataToSend.append("productName", product.productName);
+      dataToSend.append("productName", product.recipeName);
       dataToSend.append("defaultPrice", product.defaultPrice);
       dataToSend.append("description", product.description);
+      dataToSend.append("addonsName", product.addonsName);
+
 
       dataToSend.append("ingredients", product.ingredients);
 
@@ -82,9 +112,6 @@ const handleImageChange = (e) => {
       setCategories([]);
     }
   }
- 
-
-
 
 useEffect(()=>{
     getAllCategory()
@@ -95,7 +122,7 @@ useEffect(()=>{
     return(
         <Modal size="lg" show={show} onHide={() => setShow(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Add New Product</Modal.Title>
+            <Modal.Title>Add New Edit Recipe</Modal.Title>
           </Modal.Header>
     
           <Modal.Body>
@@ -107,13 +134,13 @@ useEffect(()=>{
                     
                         <div className="col-md-6">
                             <div className="mb-6">
-                                <label for="">Product Name</label>
-                                <input required type="text" className="form-control" placeholder=""  value={product.productName}   onChange={(e) => setProduct({ ...product, productName: e.target.value })}   />
+                                <label for="">Recipe Name</label>
+                                <input required type="text" className="form-control" placeholder=""  value={selectedProduct.recipeName}   onChange={(e) => setProduct({ ...product, productName: e.target.value })}   />
                             </div>
                         </div> 
                         <div className="col-md-4">
               <div className="mb-3">
-                <label htmlFor="image">Product Photo</label> 
+                <label htmlFor="image">Recipe Photo</label> 
                 <input
                   type="file"
                   className="form-control"
@@ -133,7 +160,7 @@ useEffect(()=>{
             </span>
 
           
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label for="">category</label>
                                 <select required
@@ -152,9 +179,25 @@ useEffect(()=>{
               </select>
                             </div>
                         </div>
-                       
+                        <div className="col-md-4">
+                            <div className="mb-3">
+
+                                <label for="">addons name</label><span className="text-danger">*</span>
+                                <Select
+                  required
+                  isMulti
+                  value={product.addonsName
+                    ? addonsOptions.filter((option) => product.addonsName.includes(option.value))
+                    : []}
+                  options={addonsOptions}
+                  onChange={handleAddons}
+
+                />
+      
+                            </div>
+                        </div>
                      
-                        <div className="col-md-6">
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label  for=""> Price</label>
                                 <input  type="text" className="form-control" placeholder=""  value={product.defaultPrice}  onChange={(e) => setProduct({ ...product, defaultPrice: e.target.value })}    />

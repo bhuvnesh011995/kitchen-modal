@@ -24,6 +24,14 @@ export default function Checkout() {
 
       };
 
+      const handleNumericInput = (value) => {
+        if (value === 'backspace') {
+          setDisplayedNumber((prev) => prev.slice(0, -1));
+        } else {
+          setDisplayedNumber((prev) => prev + value);
+        }
+      };
+
     return (
         <Common>
             <div class="page-wrapper ms-0 mt-2">
@@ -86,15 +94,18 @@ export default function Checkout() {
                 </div>
 
                 <div className="row no-gutters">
-      {[1, 2, 3, '+10', 4, 5, 6, '+20', 7, 8, 9, '+50', '+/-', 0, '.', 'backspace'].map((value, index) => (
-        <div key={index} className="col-md-3">
-          <div className="num-pad-button num-pad-checkout-btn">
-            <button className="btn btn-number w-100 text-dark">
-              {value === 'backspace' ? <i className="fas fa-backspace"></i> : value}
-            </button>
-          </div>
-        </div>
-      ))}
+                {[1, 2, 3, '+10', 4, 5, 6, '+20', 7, 8, 9, '+50', '+/-', 0, '.', 'backspace'].map((value, index) => (
+    <div key={index} className="col-md-3">
+      <div className="num-pad-button num-pad-checkout-btn">
+        <button
+          className="btn btn-number w-100 text-dark"
+          onClick={() => handleNumericInput(value)}
+        >
+          {value === 'backspace' ? <i className="fas fa-backspace"></i> : value}
+        </button>
+      </div>
+    </div>
+  ))}
     
     </div>
                

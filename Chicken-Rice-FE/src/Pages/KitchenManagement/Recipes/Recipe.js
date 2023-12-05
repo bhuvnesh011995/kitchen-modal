@@ -3,14 +3,14 @@ import MainPage from "../../../Components/Common/MainPage";
 import { useMemo, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import AddNewProduct from "./AddNewProduct";
+import AddNewRecipe from "./AddNewRecipe";
 import BASEURL from "../../../Config/Config";
 import { useEffect } from "react";
 import { getProduct,deleteProduct } from "../../../utility/product/product";
 import axios from "axios";
-import ViewProduct from "./ViewProduct";
-import EditProduct from "./EditProduct";
-export default function Product() {
+import ViewRecipe from "./ViewRecipe";
+import EditRecipe from "./EditRecipe";
+export default function Recipe() {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -47,12 +47,13 @@ export default function Product() {
     console.log('RES',res)
     if(res.status ===200){
       let array = res.data.product.map(ele=>({
-        productName:ele.productName,
+        recipeName:ele.productName,
         createdAt:ele.createdAt?.slice(0,10).split("-").reverse().join("/"),
         category: ele.category?._id,
         categoryName: ele.category?.name,
         subCategory:ele.subCategory?._id,      
         productFile:ele.file,
+        addonsName:ele.addonsName,
         status:ele.status,
         defaultPrice:ele.defaultPrice,
         description:ele.description,
@@ -125,14 +126,14 @@ async function deleteProductId(id){
       },
       
       {
-        accessorKey: "productName",
-        header: "Product Name",
+        accessorKey: "recipeName",
+        header: "Recipe Name",
         Cell: ({ row }) => (
           <div
             style={{ color: row.original === selectedProduct ? "black" : "blue" }}
             onClick={() => handleNameClick(row.original)}
           >
-            {row.original.productName}
+            {row.original.recipeName}
           </div>
         ),
       },
@@ -164,7 +165,7 @@ async function deleteProductId(id){
       },
     ],[])
   return (
-    <MainPage title={"Product"}>
+    <MainPage title={"Recipe"}>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -176,9 +177,9 @@ async function deleteProductId(id){
                       <h2></h2>
                     </div>
                     <div class="col-sm-6 text-end">
-                    {isOpen && <AddNewProduct  show={isOpen} setShow={setIsOpen} getAllProduct={getAllProduct} />}
-                    {open && <ViewProduct  show={open} setShow={setOpen} selectedProduct={selectedProduct}  />}
-                    {openEdit && <EditProduct  show={openEdit} setShow={setOpenEdit} selectedProduct={selectedProduct}  getAllProduct={getAllProduct} />}
+                    {isOpen && <AddNewRecipe  show={isOpen} setShow={setIsOpen} getAllProduct={getAllProduct} />}
+                    {open && <ViewRecipe  show={open} setShow={setOpen} selectedProduct={selectedProduct}  />}
+                    {openEdit && <EditRecipe  show={openEdit} setShow={setOpenEdit} selectedProduct={selectedProduct}  getAllProduct={getAllProduct} />}
 
               <button
                 onClick={() => setIsOpen(true)}
