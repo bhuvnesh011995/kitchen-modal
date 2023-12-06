@@ -1,7 +1,7 @@
 const db = require("../models");
 
 exports.addProduct = async function (req, res, next) {
-  const {productName,category,defaultPrice,description,ingredients,status} = req.body;
+  const {productName,category,defaultPrice,description,ingredients,addonsName, status} = req.body;
   console.log(req.body)
   try {
     if(category &&  !await db.categories.exists({_id:category})) return res.status(400).json({
@@ -15,6 +15,7 @@ exports.addProduct = async function (req, res, next) {
     if (defaultPrice) obj.defaultPrice = defaultPrice;
     if (description) obj.description = description;
     if (ingredients) obj.ingredients = ingredients;
+    if(addonsName) obj.addonsName = addonsName
     if (status!=undefined) obj.status = status;
     if(req.file) obj.file = req.file.filename
     await db.product.create(obj);
@@ -85,7 +86,7 @@ exports.deleteProduct = async function(req,res,next){
   }
 }
 exports.updateProduct = async function (req,res,next){
-  let { productName,category,defaultPrice,description,ingredients,status} = req.body
+  let { productName,category,defaultPrice,description,ingredients,addonsName,status} = req.body
       const {id} = req.params
        console.log(req.body)
   try {
@@ -107,6 +108,7 @@ exports.updateProduct = async function (req,res,next){
       if (defaultPrice) obj.defaultPrice = defaultPrice;
       if (description) obj.description = description;
       if (ingredients) obj.ingredients = ingredients;
+      if (addonsName) obj.addonsName = addonsName;
       if(req.file) obj.file = req.file.filename
       if(status!=undefined) obj.status = status
       await db.product.findOneAndUpdate({_id:id},{

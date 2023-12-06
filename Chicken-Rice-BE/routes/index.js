@@ -11,4 +11,5 @@ module.exports = app=>{
     require("./currency.route")(app)
     require("./allOrder.route")(app)
     require("./generalSystem.route")(app)
+    require("./addons.route")(app)
 }

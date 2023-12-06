@@ -10,7 +10,7 @@ import Practice from './practice';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import IncommingOrders from './Pages/KitchenManagement/IncommingOrders/IncommingOrders';
 import OrderQueue from './Pages/KitchenManagement/OrderQueue/OrderQueue';
-import Recipe from './Pages/KitchenManagement/Recipe/Recipe';
+// import Recipe from './Pages/KitchenManagement/Recipe/Recipe';
 import QrManagement from './Pages/Orders/QrManagement/QrManagement';
 import MenuManagement from './Pages/Orders/MenuManagement/MenuManagement';
 import OrderProcessing from './Pages/Orders/OrderProcessing/OrderProcessing';
@@ -46,7 +46,8 @@ import POS from './Pages/POS/OtherPages/POS/POS';
 import ProductModal from './Pages/POS/OtherPages/POS/ProductModal';
 
 import Category from './Pages/KitchenManagement/Category/Category';
-import Product from './Pages/KitchenManagement/Product/Product';
+import Recipe from './Pages/KitchenManagement/Recipes/Recipe';
+import Addons from './Pages/KitchenManagement/Addons/Addons';
 import Orders from './Pages/KitchenManagement/Order/Order';
 import MobileOrder from './Pages/KitchenManagement/Order/MobileOrder';
 import PosOrder from './Pages/KitchenManagement/Order/PosOrder';
@@ -94,7 +95,8 @@ root.render(
       <Route path='/management/orderQueue' element={<Common><OrderQueue/></Common>}/>
         
       <Route path='/management/category' element={<Common > <Category/></Common>}/>
-      <Route path="/management/product" element={<Common><Product /></Common>} />
+      <Route path="/management/recipe" element={<Common><Recipe /></Common>} />
+      <Route path="/management/addons" element={<Common><Addons/></Common>} />
       <Route path='/order/allOrder' element={<Common><Orders/></Common>}/>
       <Route path='/order/posOrder' element={<Common><PosOrder/></Common>}/>
       <Route path='/order/mobileOrder' element={<Common><MobileOrder/></Common>}/>
@@ -102,7 +104,7 @@ root.render(
       <Route path='/order-details' element={<KitchenScreen />}/>
       <Route path='/qrbuilder' element={<Common><QrBuilder/></Common>}/>
       <Route path='/qrcodegenerator' element={<Common><QrCodeGenerator/></Common>}/>
-      <Route path='/management/recipe' element={<Common><Recipe/></Common>}/>
+      {/* <Route path='/management/recipe' element={<Common><Recipe/></Common>}/> */}
       <Route path='/order/qrManagement' element={<Common><QrManagement/></Common>}/>
       <Route path='/order/menuManagement' element={<Common><MenuManagement/></Common>}/>
       <Route path='/order/orderProcessing' element={<Common><OrderProcessing/></Common>}/>

@@ -39,6 +39,8 @@ export const getCategories = async ()=>{
 }
 
 
+
+
 export const getTable = async ()=>{
     try {
         let response = await api.get("/table")

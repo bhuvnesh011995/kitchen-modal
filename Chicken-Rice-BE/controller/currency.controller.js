@@ -18,8 +18,6 @@ exports.addCurrency = async function(req,res,next){
     }
 }
 
-
-
 exports.getCurrency = async function(req,res,next){
     try {
         let currency = await db.currency.find()

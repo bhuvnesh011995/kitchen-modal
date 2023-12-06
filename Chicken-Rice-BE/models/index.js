@@ -10,5 +10,5 @@ module.exports = {
      currency:require("./currency.model"),
      allOrder:require("./allOrder.model"),
     system:require("./generalSetting.model"),
-    
+     addons:require("./addons.model")
     }

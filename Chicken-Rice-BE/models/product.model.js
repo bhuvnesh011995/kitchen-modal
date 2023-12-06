@@ -16,6 +16,7 @@ category:{
 defaultPrice:{
     type:String
 },
+addonsName: [{ type: String }],
 
 discount:{
     type:String
