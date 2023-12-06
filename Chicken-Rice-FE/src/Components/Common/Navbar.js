@@ -1,13 +1,40 @@
-import { useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
 import { useNavigate } from "react-router-dom"
 import logo1 from "../../assets/Images/logo1.png"
 import logo2 from "../../assets/Images/logo2.png"
 import { authContext } from "../../Context/AuthContext"
 import { logout } from "../../utility/auth/auth"
+import { getAllLanguage } from "../../utility/language/language"
+import { toast } from "react-toastify"
+import { useSetting } from "../../Context/SettingContext"
 
 export default function Navbar({inactive,setInactive,show=true}){
+    const {getLanguageData}= useSetting()
+    const [ready,setReady]  = useState(false)
+    const [languages,setLanguages] = useState([])
+    const [selectedLang,setSelectedLang] = useState(null)
+    useEffect(()=>{
+        if(ready) getLanguages()
+        else setReady(true)
+    },[ready])
 
+const getLanguages = useCallback(async ()=>{
+    try {
+        let res= await getAllLanguage()
+        if(res.status===200){
+            setLanguages(res.data)
+            res.data?.length && getLanguageData(res.data[0]?._id)
+            res.data?.length && setSelectedLang(res.data[0])
+        }else{
+            console.log(res)
+            toast.error('error while fetching languages')
+        }
+    } catch (error) {
+        console.log(error)
+            toast.error('error while fetching languages')
+    }
+},[getLanguageData])
     useEffect(()=>{
         if(inactive){ 
             document.body.classList
@@ -64,33 +91,17 @@ export default function Navbar({inactive,setInactive,show=true}){
                     <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img id="header-lang-img" src="assets/images/flags/us.jpg" alt="Header Language" height="16"/>
+                            {selectedLang && <span>{selectedLang.name}</span>}
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
 
-                                {/* <!-- item--> */}
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="en">
-                                    <img src="assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"/> <span class="align-middle">English</span>
-                                </a>
-                                {/* <!-- item--> */}
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                                    <img src="assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"/> <span class="align-middle">Spanish</span>
-                                </a>
-
-                                {/* <!-- item--> */}
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                                    <img src="assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"/> <span class="align-middle">German</span>
-                                </a>
-
-                                {/* <!-- item--> */}
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                                    <img src="assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"/> <span class="align-middle">Italian</span>
-                                </a>
-
-                                {/* <!-- item--> */}
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                                    <img src="assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"/> <span class="align-middle">Russian</span>
-                                </a>
+                              {languages.map(ele=>(
+                                <a key={ele._id} onClick={()=>{
+                                    setSelectedLang(ele)
+                                    getLanguageData(ele._id)
+                                }} class="dropdown-item notify-item language"><span>{ele.name}</span></a>
+                              ))}
+                                
                             </div>
                         </div>
 

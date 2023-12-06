@@ -72,9 +72,11 @@ import { CartProvider } from './Pages/POS/POSOrder/Reducer';
 import KitchenScreen from './Pages/KitchenScreen/KitchenScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import SettingProvider from './Context/SettingContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
+  <SettingProvider>
   <ToastContainer/>
   <AuthProvider>
   <CartProvider>            
@@ -159,7 +161,7 @@ root.render(
   </HashRouter>
   </CartProvider>
   </AuthProvider>
-  
+  </SettingProvider>
   </>
 
 );

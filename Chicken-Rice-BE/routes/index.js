@@ -10,4 +10,5 @@ module.exports = app=>{
     require("./language.route")(app)
     require("./currency.route")(app)
     require("./allOrder.route")(app)
+    require("./generalSystem.route")(app)
 }

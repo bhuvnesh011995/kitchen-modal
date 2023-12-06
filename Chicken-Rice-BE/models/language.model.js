@@ -1,17 +1,23 @@
 const {Schema,model} = require("mongoose")
 
-const schema = new Schema({
+const languageConstant = require("../constants/language.constant")
 
-name:{
-    type:String
-},
-code:{
-   type:String
-},
+let lanFieldObj = languageConstant.reduce((acc,curr)=>{
+    acc[curr] = {type:Schema.Types.String,default:null}
+    return acc
+    },{})
 
-},
-{
-    collection:"language",
-    timestamps:true
-})
-module.exports=model("language",schema)
+    const schema = new Schema({
+        name: { type: String },
+        code: { type: String },
+        language:lanFieldObj,
+        status: {
+          type: String,
+          enum: ['active', 'inactive'],
+          default: 'active'
+        }
+      }, {
+        collection: "languages"
+      })
+      
+module.exports = model("languages",schema)

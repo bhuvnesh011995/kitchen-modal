@@ -40,7 +40,6 @@ mongoose.connect(dbConfig.URI, {
   },
   filename:(req,file,cb)=>{
     let uniqueName
-    console.log(file)
     uniqueName = "Img-"+Date.now()+"."+file.mimetype.split("/")[1]
     cb(null,"uploads/"+uniqueName)
   }
@@ -56,6 +55,9 @@ mongoose.connect(dbConfig.URI, {
 
 // checking initial things if not present create one
   async function init(){
+    try {
+      
+    
 
 // checkng if superadmin role present 
 
@@ -84,14 +86,30 @@ else {
     role:role._id
   }
 })
-return console.info('superadmin created for the role of superadmin')
+ console.info('superadmin created for the role of superadmin')
 
 }
-}
-
- else if(admin){
-    return console.info("superadmin already present")
+}else if(admin){
+   console.info("superadmin already present")
  }
+
+
+
+ // checking general system 
+ 
+ let generalSetting = await models.system.findOne()
+ if(!generalSetting){
+  await models.system.create({})
+  console.log("system general setting created")
+ }else console.log("general setting already present")
+
+
+
+
+
+} catch (error) {
+      console.log(error)
+}
 }
 
 

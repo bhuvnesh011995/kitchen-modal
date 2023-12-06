@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import RadialChart from "./RadialChart";
 import RevenueChart from "./RevenueChart";
 
@@ -60,7 +61,7 @@ export default function Charts() {
                             <div class="col-lg-7">
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h4 class="header-title">Daily Sales Report</h4>
+                                        <h4 class="header-title"><FormattedMessage id="Daily_Sales_Report" defaultMessage={"Daily Sales Report"}/></h4>
                                         <div>
                                             <button type="button" class="btn btn-soft-secondary btn-sm">
                                                 ALL

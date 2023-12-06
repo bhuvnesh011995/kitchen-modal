@@ -6,8 +6,9 @@ module.exports = {
     fixed:require("./fixed.model"), 
     product:require("./product.model"),
      qrbuildertable:require("./qrbuildertable.model"),
-     language:require("./language.model"),
+     languages:require("./language.model"),
      currency:require("./currency.model"),
      allOrder:require("./allOrder.model"),
-
+    system:require("./generalSetting.model"),
+    
     }

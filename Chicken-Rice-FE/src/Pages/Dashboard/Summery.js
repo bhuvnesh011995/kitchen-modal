@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl"
 import MiniColumnChart from "./Charts.js/MiniColumnChart"
 
 export default function Summery() {
@@ -47,7 +48,7 @@ export default function Summery() {
                                     <div className="card-body">
                                         <div className="row align-items-center">
                                             <div className="col-6">
-                                                <h5 className="text-muted fw-normal mt-0 text-truncate" title="Deals">Total Orders</h5>
+                                                <h5 className="text-muted fw-normal mt-0 text-truncate" title="Deals"><FormattedMessage id="Total-Orders" defaultMessage={"Total Orders"} /></h5>
                                                 <h3 className="my-2 py-1">8861</h3>
                                                 <p className="mb-0 text-muted">
                                                     <span className="text-success me-2"><i className="mdi mdi-arrow-up-bold"></i> 4.87%</span>
