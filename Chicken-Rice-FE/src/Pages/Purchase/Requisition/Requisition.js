@@ -1,69 +1,53 @@
-import MaterialReactTable from "material-react-table";
 import MainPage from "../../../Components/Common/MainPage";
-import { useMemo, useState } from "react";
-import { Box, IconButton } from "@mui/material";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { useEffect, useMemo, useState } from "react";
 import AddNew from "./AddNew";
+import { api } from "../../../Context/AuthContext";
+import { toast } from "react-toastify";
+import { CommonDataTable } from "../../../Components/Common/commonDataTable";
+import { purchaseRequisitionHeaders } from "../../../constants/table.constants";
+import { FormattedMessage } from "react-intl";
+import moment from "moment";
 
 export default function Requisition() {
-  const [isOpen,setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-    const [data,setData] = useState([{
-        referance:"kljdsaf678adsfjhas",
-        quotationId:"7868yghj",
-        orderDate:"2023/05/18",
-        requesterName:"Bhuvnesh Kumar",
-        subTotal:"$6549",
-        totalAmount:"$8974357",
-        status:"success"
-    }])
-  let columns = useMemo(
-    () => [
-      {
-        accessorKey: "referance",
-        header: "Referance",
-      },
-      {
-        accessorKey: "quotationId",
-        header: "Quotation Id",
-      },
-      {
-        accessorKey: "orderDate",
-        header: "Order Date",
-      },
-      {
-        accessorKey: "requesterName",
-        header: "Requester Name",
-      },
-      {
-        accessorKey: "subTotal",
-        header: "Sub Total",
-      },
-      {
-        accessorKey: "totalAmount",
-        header: "Total Amount",
-      },
-      {
-          accessorFn: (row) => row.status,
-          id: "status",
-          header: "Status",
-          Cell: ({ renderedCellValue, row }) => (
-            <div
-              style={{
-                color: renderedCellValue === "success" ? "green" : "red",
-              }}
-            >
-              {renderedCellValue}
-            </div>
-          ),
-      },
-    ],
-    []
-  );
+  const [purchaseRequisitions, setPurchaseRequisitions] = useState([]);
+
+  useEffect(() => {
+    getAllPurchaseRequisition();
+  }, []);
+
+  const getAllPurchaseRequisition = async () => {
+    try {
+      const allPurchaseRequisitions = await api.get(
+        "/purchaseRequisition/allPurchaseRequisitions"
+      );
+      if (allPurchaseRequisitions.status == 200) {
+        allPurchaseRequisitions.data.map((requisition, index) => {
+          allPurchaseRequisitions.data[index]["subTotal"] = 0;
+          allPurchaseRequisitions.data[index]["totalAmount"] = 0;
+
+          requisition.orderLines.map((order) => {
+            allPurchaseRequisitions.data[index]["subTotal"] =
+              allPurchaseRequisitions.data[index]["subTotal"] +
+              Number(order.quantity) * Number(order.gross);
+
+            allPurchaseRequisitions.data[index]["totalAmount"] =
+              allPurchaseRequisitions.data[index]["totalAmount"] +
+              Number(order.quantity) * Number(order.cost);
+          });
+        });
+        setPurchaseRequisitions(allPurchaseRequisitions.data);
+      } else {
+        toast.error("something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <MainPage title={"Purchase Requisition"}>
-        
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -75,51 +59,54 @@ export default function Requisition() {
                       <h2></h2>
                     </div>
                     <div class="col-sm-6 text-end">
-                      <button onClick={()=>setIsOpen(true)} type="button" class="btn btn-primary">
-                        <i  class="fa fa-plus"></i> Add New
+                      <button
+                        onClick={() => setIsOpen(true)}
+                        type="button"
+                        class="btn btn-primary"
+                      >
+                        <i class="fa fa-plus"></i> Add New
                       </button>
                     </div>
                   </div>
                 </div>
-                {/* table */}
-                <MaterialReactTable
-                  data={data}
-                  columns={columns}
-                  enableRowActions
-                  positionActionsColumn="last"
-                  enableRowNumbers
-                  rowNumberMode="static"
-                  renderRowActions={({ row, table }) => (
-                    <Box
-                      sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}
-                    >
-                      <IconButton
-                        color="secondary"
-                        onClick={() => {
-                          table.setEditingRow(row);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        color="error"
-                        onClick={() => {
-                          data.splice(row.index, 1); //assuming simple data table
-                          setData([...data]);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                  )}
+                <CommonDataTable
+                  data={purchaseRequisitions}
+                  tableHeaders={purchaseRequisitionHeaders}
+                  actionButtons
+                  deleteButton
+                  editButton
+                  viewButton
+                  changeSelectedColumnDataDesign={["created_at"]}
+                  changedDataCellColumn={(tableHeader, accessor) => {
+                    if (accessor == "created_at")
+                      return {
+                        accessorKey: accessor,
+                        header: tableHeader,
+                        Header: () => (
+                          <FormattedMessage
+                            id={tableHeader}
+                            defaultMessage={tableHeader}
+                          />
+                        ),
+                        Cell: ({ row }) => (
+                          <div>
+                            {moment(row.original.created_at).format(
+                              "DD-MM-YYYY"
+                            )}
+                          </div>
+                        ),
+                      };
+                  }}
+                  callback={(data, type, index) =>
+                    console.log(data, type, index)
+                  }
                 />
               </div>
             </div>
           </div>
         </div>
-        {isOpen && <AddNew show={isOpen} setShow={setIsOpen}/>}
+        {isOpen && <AddNew show={isOpen} setShow={setIsOpen} />}
       </div>
     </MainPage>
   );
 }
-
