@@ -1,8 +1,14 @@
 import React from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Navbar from '../../../Components/Common/Navbar';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 const Check = () => {
+  const navigate =useNavigate()
+ 
   return (
     <div className="page">
+      <Navbar/>
       <div className="page-content">
         <div className="content-sticky-footer">
           <div className="container">
@@ -82,7 +88,7 @@ const Check = () => {
         <div style={{position:"relative",zIndex:"99999",borderRadius:'8%'}}>
                 <div style={{ position: "fixed", top: "91%", left: "5%", width: '50%', transform: 'translateY(-50%)', backgroundColor: '#800', height: '35px', borderRadius: '15px',marginLeft:'15%' }}  >
   <span style={{ display: 'flex', alignItems: 'center', height: '100%',justifyContent:'center'}}>
-    <span style={{marginLeft:'2%',color:'#fff',justifyContent:'center',alignItems:'center' }}>
+    <span style={{marginLeft:'2%',color:'#fff',justifyContent:'center',alignItems:'center' }} onClick={()=>navigate('/ordersummary')}>
         Check Out
    <ShoppingCartIcon/>
     </span>

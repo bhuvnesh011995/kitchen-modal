@@ -1,9 +1,17 @@
 import React from 'react';
 import styles from './App.module.css';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Navbar from '../../../Components/Common/Navbar';
+import { useLocation } from 'react-router-dom';
+import BASEURL from '../../../Config/Config';
 const AddOnPos = () => {
+  const location = useLocation()
+  const { state } = location;
+const product = state && state.item;
+console.log('product',product)
   return (
     <div className={styles.page}>
+      <Navbar/>
       <div className=" page-content">
         <div className="content-sticky-footer">
           <div className="container">
@@ -11,7 +19,7 @@ const AddOnPos = () => {
               <div className="col-4 col-sm-4">
                 <div  class="menu-img">
                   <img
-                    src="photo/nonveg1.jpeg"
+                    src={BASEURL + '/files/' + product.file}
                     alt=""
                     class="imgfluid img-thumbnail"
                    style={{ padding: 0 }}
@@ -20,14 +28,14 @@ const AddOnPos = () => {
               </div>
               <div className="col-8 col-sm-8 add-on">
                 <div className="menu-item-description ">
-                  <h4>Chicken With French Fries</h4>
+                  <h4>{product.recipeName}</h4>
                 </div>
               </div>
               <p style={{marginTop:'1%'}}>
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est totam ut corrupti incidunt
                 voluptatibus at architecto,
               </p>
-            </div>
+            </div>    
             <hr />
             <div className="container">
               <div id="accordion" className="accordion">

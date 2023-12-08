@@ -1,8 +1,9 @@
 import React from 'react';
-
+import Navbar from '../../../Components/Common/Navbar';
 export default function PaymentCheckOut() {
   return (
     <div className="page-content">
+        <Navbar/>
       <div className="content-sticky-footer">
         <div className="container">
           <div className="card p-1 mb-2">

@@ -1,8 +1,11 @@
 import React from 'react';
-
+import Navbar from '../../../Components/Common/Navbar';
+import { useNavigate } from 'react-router-dom';
 export default function OrderSummary() {
+    const navigate = useNavigate()
   return (
     <div className="page-content">
+        <Navbar/>
       <div className="content-sticky-footer">
         <div className="container">
           <div className="card p-2 mb-2" >
@@ -128,7 +131,7 @@ export default function OrderSummary() {
       </div> */}
         <div style={{position:"relative",zIndex:"99999",borderRadius:'8%'}}>
                 <div style={{ position: "fixed", top: "91%", left: "5%", width: '50%', transform: 'translateY(-50%)', backgroundColor: '#800', height: '40px', borderRadius: '15px',marginLeft:'15%' }}  >
-  <span style={{ display: 'flex', alignItems: 'center', height: '100%',justifyContent:'center'}}>
+  <span style={{ display: 'flex', alignItems: 'center', height: '100%',justifyContent:'center'}} >
     <span style={{marginLeft:'2%',color:'#fff',justifyContent:'center',alignItems:'center' }}>
         Order Status
     </span>

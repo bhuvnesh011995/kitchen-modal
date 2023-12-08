@@ -14,7 +14,6 @@ export default function POSMain(){
      const [categories ,setCategories] = useState([])
      const { shoppingCart, dispatch } = useCart();
 
-     const [currentQuantity] = useState(1);
 
    
        const handleCategoryClick = (category) =>{
