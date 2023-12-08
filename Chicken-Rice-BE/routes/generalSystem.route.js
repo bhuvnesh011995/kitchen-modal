@@ -8,4 +8,5 @@ module.exports = app=>{
         { name: "systemLogo", maxCount: 1 },
     ])],generalSettingController.updatesystem)
     app.get("/cr/api/v1/system",[],generalSettingController.getSystemSetting)
+    app.delete("/cr/api/v1/system/:field",[],generalSettingController.deleteLogos)
 }

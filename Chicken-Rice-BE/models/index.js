@@ -10,5 +10,7 @@ module.exports = {
      currency:require("./currency.model"),
      allOrder:require("./allOrder.model"),
     system:require("./generalSetting.model"),
-     addons:require("./addons.model")
+     addons:require("./addons.model"),
+     mailConfig:require("./mailConfig.model"),
+     vatAndTax:require("./vatAndTax.model")
     }

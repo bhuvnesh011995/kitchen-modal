@@ -12,4 +12,5 @@ module.exports = app=>{
     require("./allOrder.route")(app)
     require("./generalSystem.route")(app)
     require("./addons.route")(app)
+    require("./mailConfig.route")(app)
 }

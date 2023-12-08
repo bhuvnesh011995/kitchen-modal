@@ -1,43 +1,23 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import BASEURL from "../../../Config/Config";
+import { useForm } from "react-hook-form";
 
-let initialState = {
-  name: "",
-  exchangeRate: "",
-  code: "",
-  symbol: "",
-};
+export default function AddNew({ addNew,
+  update,
+  data,
+  setData,show, setShow }) {
+    const {register,reset,formState:{errors},handleSubmit}=useForm()
+  const [currency, setCurrency] = useState({});
+  const [ready,setReady] = useState(false)
 
-export default function AddNew({ show, setShow }) {
-  const [currency, setCurrency] = useState(initialState);
+  useEffect(()=>{
+    if(ready&&data) reset(data)
+    else setReady(true)
+  return ()=>{
+    if(ready) setData(null)
+  } 
+  },[ready])
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-      let formData = new FormData();
-      formData.append("name", currency.name);
-      formData.append("code", currency.code);
-      formData.append("symbol", currency.symbol);
-      formData.append("exchangeRate", currency.exchangeRate);
-
-      let response = await axios({
-        url: BASEURL + "/currency",
-        method: "POST",
-        data: formData,
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (response.status === 201) {
-        setShow(false);
-      } else {
-        // Handle other cases if needed
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <Modal size="lg" show={show} onHide={() => setShow(false)}>
@@ -46,23 +26,20 @@ export default function AddNew({ show, setShow }) {
       </Modal.Header>
 
       <Modal.Body>
-        <form className="needs-validation" onSubmit={(e) => handleSubmit(e)}>
+        <form className="needs-validation" onSubmit={handleSubmit(()=>{
+           data?update(data._id,currency):addNew(currency)
+        })}>
           <div className="row">
             <div className="col-md-6">
               <div className="mb-3">
                 <label htmlFor="currencyName"> Name</label>
                 <input
-                  required
+                {...register("name",{required:"this is required filed",onChange:e=>setCurrency(preVal=>({...preVal,name:e.target.value}))})}
                   type="text"
                   className="form-control"
-                  placeholder=""
-                  onChange={(e) =>
-                    setCurrency((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
+                  placeholder="Enter Currency Name"
                 />
+                {errors.name && <span style={{color:"red"}}>{errors.name.message}</span>}
               </div>
             </div>
 
@@ -70,17 +47,12 @@ export default function AddNew({ show, setShow }) {
               <div className="mb-3">
                 <label htmlFor="currencySymbol"> Symbol</label>
                 <input
-                  required
                   type="text"
                   className="form-control"
-                  placeholder=""
-                  onChange={(e) =>
-                    setCurrency((prev) => ({
-                      ...prev,
-                      symbol: e.target.value,
-                    }))
-                  }
+                  placeholder="Enter Currency Symbol"
+                  {...register("symbol",{required:"this is required filed",onChange:e=>setCurrency(preVal=>({...preVal,symbol:e.target.value}))})}
                 />
+                {errors.symbol && <span style={{color:"red"}}>{errors.symbol.message}</span>}
               </div>
             </div>
 
@@ -88,17 +60,12 @@ export default function AddNew({ show, setShow }) {
               <div className="mb-3">
                 <label htmlFor="currencyCode"> Code</label>
                 <input
-                  required
                   type="text"
                   className="form-control"
-                  placeholder=""
-                  onChange={(e) =>
-                    setCurrency((prev) => ({
-                      ...prev,
-                      code: e.target.value,
-                    }))
-                  }
+                  placeholder="Enter Currency Code"
+                  {...register("code",{required:"this is required filed",onChange:e=>setCurrency(preVal=>({...preVal,code:e.target.value}))})}
                 />
+                {errors.code && <span style={{color:"red"}}>{errors.code.message}</span>}
               </div>
             </div>
 
@@ -106,17 +73,12 @@ export default function AddNew({ show, setShow }) {
               <div className="mb-3">
                 <label htmlFor="currencyExchangeRate"> Exchange Rate</label>
                 <input
-                  required
-                  type="text"
+                  {...register("exchangeRate",{required:"this is required filed",onChange:e=>setCurrency(preVal=>({...preVal,exchangeRate:e.target.value}))})}
+                  type="number"
                   className="form-control"
-                  placeholder=""
-                  onChange={(e) =>
-                    setCurrency((prev) => ({
-                      ...prev,
-                      exchangeRate: e.target.value,
-                    }))
-                  }
+                  placeholder="Enter Exchange Rate"
                 />
+                {errors.exchangeRate && <span style={{color:"red"}}>{errors.exchangeRate.message}</span>}
               </div>
             </div>
           </div>
@@ -128,7 +90,7 @@ export default function AddNew({ show, setShow }) {
             >
               Close
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit"className="btn btn-primary">
               Save
             </button>
           </div>
