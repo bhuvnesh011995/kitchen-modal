@@ -16,7 +16,7 @@ module.exports = (app) => {
     purchaseRequisitionController.deletePurchaseRequisition
   );
   app.put(
-    "/cr/api/v1/purchaseRequisition/updatePurchaseRequisition/:id",
+    "/cr/api/v1/purchaseRequisition/updatePurchaseRequisition",
     [],
     purchaseRequisitionController.updatePurchaseRequisition
   );

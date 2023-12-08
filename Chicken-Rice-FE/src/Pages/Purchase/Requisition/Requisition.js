@@ -7,15 +7,45 @@ import { CommonDataTable } from "../../../Components/Common/commonDataTable";
 import { purchaseRequisitionHeaders } from "../../../constants/table.constants";
 import { FormattedMessage } from "react-intl";
 import moment from "moment";
+import DeleteModal from "../../../Components/commonDeleteModal";
 
 export default function Requisition() {
   const [isOpen, setIsOpen] = useState(false);
 
   const [purchaseRequisitions, setPurchaseRequisitions] = useState([]);
+  const [purchaseRequisitionData, setPurchaseRequisitionData] = useState(null);
+  const [purchaseRequisitionIndex, setPurchaseRequisitionIndex] =
+    useState(null);
+  const [viewRequisitionModal, setViewRequisitionModal] = useState(false);
+  const [deleteRequisitionModal, setDeleteRequisitionModal] = useState(false);
 
   useEffect(() => {
     getAllPurchaseRequisition();
   }, []);
+
+  const updateRequisitions = (data) => {
+    const filterRequisitions = purchaseRequisitions.filter(
+      (requisition) => requisition._id == data._id
+    );
+
+    data["subTotal"] = 0;
+    data["totalAmount"] = 0;
+
+    data.orderLines.map((order) => {
+      data["subTotal"] =
+        data["subTotal"] + Number(order.quantity) * Number(order.gross);
+
+      data["totalAmount"] =
+        data["totalAmount"] + Number(order.quantity) * Number(order.cost);
+    });
+
+    if (filterRequisitions.length) {
+      purchaseRequisitions[purchaseRequisitionIndex] = data;
+      setPurchaseRequisitions([...purchaseRequisitions]);
+    } else {
+      setPurchaseRequisitions([...purchaseRequisitions, data]);
+    }
+  };
 
   const getAllPurchaseRequisition = async () => {
     try {
@@ -46,6 +76,42 @@ export default function Requisition() {
     }
   };
 
+  const showNewRequisitionModal = (data, type, index) => {
+    setPurchaseRequisitionData(data);
+    setPurchaseRequisitionIndex(index);
+    if (type == "view") {
+      setViewRequisitionModal(true);
+      setDeleteRequisitionModal(false);
+    } else if (type == "delete") {
+      setViewRequisitionModal(false);
+      setDeleteRequisitionModal(true);
+    } else {
+      setViewRequisitionModal(false);
+      setDeleteRequisitionModal(false);
+    }
+    if (type != "delete") setIsOpen(true);
+  };
+
+  const deleteSelectedRequisition = async (data) => {
+    try {
+      const deleteRequisition = await api.delete(
+        "/purchaseRequisition/deletePurchaseRequisition/" + data?._id
+      );
+      if (deleteRequisition.status == 200) {
+        const filterRequisitions = purchaseRequisitions.filter(
+          (requisition) => requisition._id != data._id
+        );
+        setPurchaseRequisitions([...filterRequisitions]);
+        toast.success(deleteRequisition.data.message);
+      } else {
+        toast.error("something Went wrong ");
+      }
+      setDeleteRequisitionModal(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <MainPage title={"Purchase Requisition"}>
       <div class="row">
@@ -60,7 +126,7 @@ export default function Requisition() {
                     </div>
                     <div class="col-sm-6 text-end">
                       <button
-                        onClick={() => setIsOpen(true)}
+                        onClick={() => showNewRequisitionModal()}
                         type="button"
                         class="btn btn-primary"
                       >
@@ -98,15 +164,33 @@ export default function Requisition() {
                       };
                   }}
                   callback={(data, type, index) =>
-                    console.log(data, type, index)
+                    showNewRequisitionModal(data, type, index)
                   }
                 />
               </div>
             </div>
           </div>
         </div>
-        {isOpen && <AddNew show={isOpen} setShow={setIsOpen} />}
+        {isOpen && (
+          <AddNew
+            show={isOpen}
+            setShow={setIsOpen}
+            viewModal={viewRequisitionModal}
+            requisitionData={purchaseRequisitionData}
+            callback={(data) => updateRequisitions(data)}
+          />
+        )}
       </div>
+      {deleteRequisitionModal && (
+        <DeleteModal
+          deleteHeader={"Purchase Requisition"}
+          show={deleteRequisitionModal}
+          setShow={setDeleteRequisitionModal}
+          deleteMessage={`Do you really want to delete ${purchaseRequisitionData.requesterName} Purchase Requisition . `}
+          data={purchaseRequisitionData}
+          callback={(requisition) => deleteSelectedRequisition(requisition)}
+        />
+      )}
     </MainPage>
   );
 }
