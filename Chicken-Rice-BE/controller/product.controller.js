@@ -1,36 +1,51 @@
 const db = require("../models");
-
 exports.addProduct = async function (req, res, next) {
-  const {productName,category,defaultPrice,description,ingredients,addonsName, status} = req.body;
-  console.log(req.body)
-  try {
-    if(category &&  !await db.categories.exists({_id:category})) return res.status(400).json({
-      success:false,
-      message:"no category exist"
-  })
- 
-    let obj = {};
-    if (productName) obj.productName = productName;
-    if (category) obj.category = category;
-    if (defaultPrice) obj.defaultPrice = defaultPrice;
-    if (description) obj.description = description;
-    if (ingredients) obj.ingredients = ingredients;
-    if(addonsName) obj.addonsName = addonsName
-    if (status!=undefined) obj.status = status;
-    if(req.file) obj.file = req.file.filename
-    await db.product.create(obj);
+  const { recipeName, category, defaultPrice, description, ingredients, addonsName, status } = req.body;
+  console.log(req.body);
 
+  try {
+    if (category && !(await db.categories.exists({ _id: category }))) {
+      return res.status(400).json({
+        success: false,
+        message: "No category exists",
+      });
+    }
+
+    let addonIds = []; 
+
+    if (addonsName) {
+      const parsedAddons = JSON.parse(addonsName);
+      addonIds = await Promise.all(parsedAddons.map(async (addonId) => {
+        const addon = await db.addons.findOne({ _id: addonId });
+        return addon ? addon._id : null;
+      }));
+
+      if (addonIds.includes(null)) {
+        return res.status(400).json({
+          success: false,
+          message: "One or more addons do not exist",
+        });
+      }
+    }
+
+    let obj = {
+      recipeName,
+      category,
+      defaultPrice,
+      description,
+      ingredients,
+      addonsName: addonIds, 
+      status,
+    };
+    if (req.file) obj.file = req.file.filename;
+    await db.product.create(obj);
     res.status(201).json({
       success: true,
-      message: "Subcategory created successfully",
+      message: "Product created successfully",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Some error occurred",
-    });
-  }
+    next(error)
+}
 };
 
 
@@ -40,9 +55,15 @@ exports.getAllProduct = async (req,res,next)=>{
     let product = await db.product
     .find({})
     .populate({
+      path: "addonsName",
+      select: "addonsName",
+    })
+    .populate({
       path: "category",
       select: "name",
     });
+
+    
 
       if(!product || !product.length) return res.status(201).end()
 
@@ -51,13 +72,8 @@ exports.getAllProduct = async (req,res,next)=>{
           product
       })
   } catch (error) {
-      console.error(error)
-
-      res.status(500).json({
-          success:false,
-          message:"some error occured"
-      })
-  }
+    next(error)
+}
 }
 
 
@@ -76,41 +92,52 @@ exports.deleteProduct = async function(req,res,next){
 
       res.status(204).end();
 
-  } catch (error) {
-      console.error(error)
-
-      res.status(500).json({
-          success:false,
-          message:"some error occured"
-      })
-  }
+  }catch (error) {
+    next(error)
+}
 }
 exports.updateProduct = async function (req,res,next){
-  let { productName,category,defaultPrice,description,ingredients,addonsName,status} = req.body
+  let { recipeName,category,defaultPrice,description,ingredients,addonsName,status} = req.body
       const {id} = req.params
        console.log(req.body)
-  try {
-      
-      if(category &&  !await db.categories.exists({_id:category})) return res.status(400).json({
-        success:false,
-        message:"no category exist"
-    })
-      let isExist = await db.product.exists({_id:id})
-      
-      if(!isExist) return res.status(400).json({
-          success:false,
-          message:"no product exist"
-      })
-
-      let obj = {}
-      if (productName) obj.productName = productName;
-      if (category) obj.category = category;
-      if (defaultPrice) obj.defaultPrice = defaultPrice;
-      if (description) obj.description = description;
-      if (ingredients) obj.ingredients = ingredients;
-      if (addonsName) obj.addonsName = addonsName;
-      if(req.file) obj.file = req.file.filename
+       try {
+        if (category && !(await db.categories.exists({ _id: category }))) {
+          return res.status(400).json({
+            success: false,
+            message: "No category exists",
+          });
+        }
+    
+        let addonIds = []; 
+    
+        if (addonsName) {
+          const parsedAddons = JSON.parse(addonsName);
+    
+          addonIds = await Promise.all(parsedAddons.map(async (addonId) => {
+            const addon = await db.addons.findOne({ _id: addonId });
+            return addon ? addon._id : null;
+          }));
+    
+          if (addonIds.includes(null)) {
+            return res.status(400).json({
+              success: false,
+              message: "One or more addons do not exist",
+            });
+          }
+        }
+    
+        let obj = {
+          recipeName,
+          category,
+          defaultPrice,
+          description,
+          ingredients,
+          addonsName: addonIds, 
+          status,
+        };
+        if (req.file) obj.file = req.file.filename;
       if(status!=undefined) obj.status = status
+
       await db.product.findOneAndUpdate({_id:id},{
           $set:obj
       })
@@ -118,10 +145,6 @@ exports.updateProduct = async function (req,res,next){
       res.status(201).end()
 
   } catch (error) {
-      console.log(error)
-      res.status(500).json({
-          success:false,
-          message:"some error occured"
-      })
-  }
+    next(error)
+}
 }

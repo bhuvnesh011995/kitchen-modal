@@ -16,36 +16,7 @@ export default function POSMain(){
 
      const [currentQuantity] = useState(1);
 
-    //  const handleProductClick = (item) => {
-    //     const existingCartItem = shoppingCart.find((cartItem) => cartItem.productId === item._id);
-    //     const quantityToAdd = currentQuantity ;
-    //     if (existingCartItem) {
-    //         const quantity = existingCartItem.quantity + quantityToAdd;
-    //         const totalPrice = item.defaultPrice * quantity;
-        
-    //         dispatch({
-    //           type: 'UPDATE_CART_ITEM_QUANTITY',
-    //           payload: { productId: item._id, quantity: quantity, totalPrice: totalPrice },
-    //         });
-    //       } else {
-    //         addToCart(item, quantityToAdd);
-    //       }
-    //     };
-      
-    //   const addToCart = (product, quantity) => {
-    //     const totalPrice = product.defaultPrice * quantity;
-
-    //     const cartItem = {
-    //       productId: product._id,
-    //       productName: product.productName,
-    //       price: product.defaultPrice,
-    //       quantity: quantity,
-    //       totalPrice: totalPrice,
-    //     };
-      
-    //     dispatch({ type: 'ADD_TO_CART', payload: cartItem });
-    //   };
-      
+   
        const handleCategoryClick = (category) =>{
            setCategory(category)
            setShowCategoryList(false)
@@ -135,7 +106,7 @@ export default function POSMain(){
 
                              <div className="product-content">
                                 <div className="product-name" id="article_product_24">
-                                    {item.productName}
+                                    {item.recipeName}
                                 </div>
                                 <span className="price-tag">${item.defaultPrice}</span>
                             </div>

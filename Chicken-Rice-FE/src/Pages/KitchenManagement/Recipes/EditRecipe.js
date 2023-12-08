@@ -7,8 +7,7 @@ import axios from "axios";
 import BASEURL from "../../../Config/Config";
 import { useEffect } from "react";
 import { getaddons } from "../../../utility/Addons/addons";
-import Select from 'react-select'
-
+import ReactSelect from "react-select";
 export default function EditRecipe({show,setShow , selectedProduct,getAllProduct})
  {
   const [selectedImage, setSelectedImage] = useState(BASEURL + "/files/" + selectedProduct.productFile);
@@ -16,6 +15,9 @@ export default function EditRecipe({show,setShow , selectedProduct,getAllProduct
 const [categories,setCategories] = useState([])
 const [product,setProduct] = useState({...selectedProduct})
 const [addons,setAddons] = useState([])
+
+console.log("selectedProduct",selectedProduct)
+
 async function getAllAddons(){
     let res =await getaddons()
     if(res.status === 200) setAddons(res.data.addons)
@@ -25,20 +27,19 @@ useEffect(()=>{
   getAllAddons()
 },[])
 
-  const addonsOptions = addons.map((ele, i) => ({
-    value:ele.addonsName, 
-    label: ele.addonsName,
-  }));
-
-  const handleAddons = (selectedOptions) => {
-
-    const selectAddons = selectedOptions.map((option) => option.value);
-    setProduct({
-      ...product,
-      addonsName: selectAddons, 
-    });
-  };
-
+const addonsOptions = addons.map((addon) => ({
+  label: addon.addonsName,
+  value: addon._id,
+}));
+  
+const handleAddons = (selectedOptions) => {
+  const selectAddons = selectedOptions.map((option) => option.value);
+  console.log('selectAddons',selectAddons)
+  setProduct({
+    ...product,
+    addonsName: selectAddons,
+  });
+};
 
  
 
@@ -77,10 +78,10 @@ const handleImageChange = (e) => {
       const dataToSend = new FormData();
       dataToSend.append("file", product.productFile);
       dataToSend.append("category", product.category);
-      dataToSend.append("productName", product.recipeName);
+      dataToSend.append("recipeName", product.recipeName);
       dataToSend.append("defaultPrice", product.defaultPrice);
       dataToSend.append("description", product.description);
-      dataToSend.append("addonsName", product.addonsName);
+      dataToSend.append('addonsName', JSON.stringify(product.addonsName));
 
 
       dataToSend.append("ingredients", product.ingredients);
@@ -135,7 +136,7 @@ useEffect(()=>{
                         <div className="col-md-6">
                             <div className="mb-6">
                                 <label for="">Recipe Name</label>
-                                <input required type="text" className="form-control" placeholder=""  value={selectedProduct.recipeName}   onChange={(e) => setProduct({ ...product, productName: e.target.value })}   />
+                                <input required type="text" className="form-control" placeholder=""  value={product.recipeName}   onChange={(e) => setProduct({ ...product, recipeName: e.target.value })}   />
                             </div>
                         </div> 
                         <div className="col-md-4">
@@ -183,16 +184,13 @@ useEffect(()=>{
                             <div className="mb-3">
 
                                 <label for="">addons name</label><span className="text-danger">*</span>
-                                <Select
-                  required
-                  isMulti
-                  value={product.addonsName
-                    ? addonsOptions.filter((option) => product.addonsName.includes(option.value))
-                    : []}
-                  options={addonsOptions}
-                  onChange={handleAddons}
+                                <ReactSelect  required
+      isMulti
+      value={addonsOptions.filter((option) => product.addonsName.includes(option.value))}
+      onChange={handleAddons}
+      options={addonsOptions}
+    />
 
-                />
       
                             </div>
                         </div>
