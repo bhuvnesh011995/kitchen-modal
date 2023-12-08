@@ -47,19 +47,16 @@ export default function Recipe() {
     console.log('RES',res)
     if(res.status ===200){
       let array = res.data.product.map(ele=>({
-        recipeName:ele.productName,
+        recipeName:ele.recipeName,
         createdAt:ele.createdAt?.slice(0,10).split("-").reverse().join("/"),
         category: ele.category?._id,
         categoryName: ele.category?.name,
-        subCategory:ele.subCategory?._id,      
         productFile:ele.file,
-        addonsName:ele.addonsName,
         status:ele.status,
         defaultPrice:ele.defaultPrice,
         description:ele.description,
         ingredients:ele.ingredients,
-      
-
+        addonsName: ele.addonsName?.map(addon => addon._id), 
           id:ele._id,
    
       }))

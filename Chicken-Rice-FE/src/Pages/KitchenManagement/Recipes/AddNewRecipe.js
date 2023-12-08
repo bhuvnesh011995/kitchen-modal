@@ -7,15 +7,15 @@ import BASEURL from "../../../Config/Config";
 import { getCategories } from "../../../utility/recipe/recipe";
 import { useEffect } from "react";
 import { getaddons } from "../../../utility/Addons/addons";
-import Select from 'react-select'
+import ReactSelect from "react-select";
 
 let initialState= {
 
-    productName: "",
+  recipeName: "",
     category: "",
     ingredients: "",
     defaultPrice:"",
-    addonsName: [],
+    addonsName:[],
         file: null
 }
 
@@ -26,33 +26,40 @@ export default function AddNewRecipe({show,setShow,getAllProduct}) {
 
     console.log('product',product)
 
-  async function handleSubmit(e){
-    e.preventDefault();
-try {
-let formData = new FormData()
-
-    for(const key in product){
-        formData.append(key,product[key])
-    }
-    console.log(formData)
-    let response = await axios({
-        url:BASEURL+"/product",
-        method:"POST",
-        data:formData,
-        headers:{ "Content-Type": "multipart/form-data" }
-    })
-
-    if(response.status===201){
-        setShow(false)
-        getAllProduct()
-    }else{
-
-    }
-} catch (error) {
-console.log(error)
-}
+    async function handleSubmit(e) {
+      e.preventDefault();
+      try {
+        let formData = new FormData();
     
-}
+        for (const key in product) {
+          if (key !== 'addonsName') {
+            formData.append(key, product[key]);
+          }
+        }
+    
+        formData.append('addonsName', JSON.stringify(product.addonsName));
+    
+        console.log(formData);
+    
+        let response = await axios({
+          url: BASEURL + "/product",
+          method: "POST",
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+    
+        if (response.status === 201) {
+          setShow(false);
+          getAllProduct();
+        } else {
+          // Handle other response statuses if needed
+        }
+      } catch (error) {
+        console.log(error);
+        // Handle errors if needed
+      }
+    }
+    
   
   const handleQuillChange = (content) => {
     setProduct({
@@ -74,19 +81,18 @@ console.log(error)
 
   const addonsOptions = addons.map((addon) => ({
     label: addon.addonsName,
-    value: addon.addonsName,
+    value: addon._id,
   }));
     
-    const handleAddons = (selectedOptions) => {
-      console.log('selectedOptions',selectedOptions)
-
-      const selectAddons = selectedOptions.map((option) => option.value);
-      console.log('selectAddons',selectAddons)
-      setProduct({
-        ...product,
-        addonsName: selectAddons, 
-      });
-    };
+  const handleAddons = (selectedOptions) => {
+    const selectAddons = selectedOptions.map((option) => option.value);
+    console.log('selectAddons',selectAddons)
+    setProduct({
+      ...product,
+      addonsName: selectAddons,
+    });
+  };
+  
 
   
    
@@ -135,9 +141,9 @@ console.log(error)
                         <div className="col-md-4">
                             <div className="mb-3">
                                 <label for="">Addons Name</label><span className="text-danger">*</span>
-                                <Select required
+                                <ReactSelect  required
       isMulti
-      value={product.addonsName ? addonsOptions.filter((option) => product.addonsName.includes(option.value)) : []}
+      value={addonsOptions.filter((option) => product.addonsName.includes(option.value))}
       onChange={handleAddons}
       options={addonsOptions}
     />

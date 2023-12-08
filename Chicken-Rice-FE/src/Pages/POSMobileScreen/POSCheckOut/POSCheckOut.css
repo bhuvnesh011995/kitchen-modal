@@ -1,0 +1,233 @@
+/* POSCheckOut.css */
+/* margin: '1%', width: '60%',display:'flex',alignItems:'center',justifyContent:'center' ,color:'#fff' */
+.category-name {
+  margin:1%;
+  width:60%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  }
+  
+ 
+
+  .imgfluid {
+   width: 27%;
+   height: 40px;
+   object-fit: cover;
+  }
+  
+
+  /* For WebKit browsers (Chrome, Safari) */
+div::-webkit-scrollbar {
+    width: 0.4em;
+  }
+  
+  div::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  .side-Scroll{
+   scrollbar-width: none;
+   overflow: scroll;
+   overflow: hidden; 
+
+  }
+  ​
+  /* Apply styles to an element with the class "pos-main" */
+.menu-list {
+  overflow-x: scroll;
+  scrollbar-width: thin; /* "auto" or "thin" depending on your preference */
+  scrollbar-color: transparent transparent; /* Adjust colors as needed */
+}
+
+/* For WebKit browsers like Chrome and Safari, set transparent color */
+.menu-list::-webkit-scrollbar {
+  width: 12px; /* Adjust the width as needed */
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Adjust color as needed */
+}
+.menu-img img {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 820px) {
+  .menu-img img {
+    width: 100%;
+    height: 200px;
+  }
+  @media screen and (min-width: 768px) {
+    .menu-img img {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+.add-on {
+  display: flex;
+  align-items: center;
+}
+
+.add-on h4 {
+  font-size: 24px;
+}
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: 10px;
+}
+
+
+
+
+.menu-item-description h4 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.menu-item-description p {
+  font-size: 12px;
+  margin: 0;
+  color: #aaa;
+}
+
+.menu-item-description h5 {
+  color: #800;
+  font-weight: 600;
+  margin: 0;
+  font-size: 17px;
+  margin-top: 5px;
+}
+.menu-listing ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-listing ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkout_btn {
+  position: fixed;
+  bottom: 1rem;
+  left: 6rem;
+  z-index: 99;
+}
+.checkout_btn a {
+  background-color: #800;
+  padding: 10px 65px;
+  color: #fff;
+  border-radius: 25px;
+}
+.checkout_btn {
+  left: 18rem;
+}
+
+.checkout_btn a {
+  font-size: 30px;
+}
+.checkout-btn {
+  left: 18rem;
+}
+
+.checkout-btn a {
+  font-size: 30px;
+}
+.card {
+  margin-bottom: 0px;
+  border: 0;
+  border-radius: 10px;
+}
+.text-success {
+  color: #56ab2f !important;
+}
+.card_title {
+  margin: 0.3rem 0;
+  font-size: 1.2em;
+}
+
+.menu-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  position: fixed;
+  left: 0;
+  z-index: 99;
+  background-color: #fff;
+  padding: 10px 0;
+}
+
+.menu-list img {
+  width: 50px;
+}
+
+.menu-list button {
+  padding: 0;
+}
+
+.menu-list li {
+  padding-left: 7px;
+}
+
+.menu-list li:first-child button {
+  padding: 7px 10px;
+  min-width: auto !important;
+}
+
+.filter-button {
+  font-size: 14px;
+  border: 1px solid #800;
+  border-radius: 5px;
+  text-align: left;
+  color: #000;
+  /* margin-bottom: 10px; */
+  min-width: 125px;
+  overflow: hidden;
+}
+
+.filter-button:hover {
+  /* border: 1px solid #ff8900; */
+  border-radius: 5px;
+  text-align: left;
+  color: #ffffff;
+  background-color: #800;
+}
+
+.btn-default:active .filter-button:active {
+  background-color: #42b32f;
+  color: white;
+}
+.btn {
+  text-transform: uppercase;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.menu-list .btn {
+  display: flex;
+  align-items: center;
+}
+.menu-dishes {
+  top: 150px;
+}
+.menu-list {
+  top: 70px;
+}
+.menu-dishes {
+  padding: 20px; /* Example padding */
+  position: absolute;
+  background-color: #f8f8f8; /* Example background color */
+}
+

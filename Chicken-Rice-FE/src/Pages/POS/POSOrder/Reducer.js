@@ -27,7 +27,7 @@ const cartReducer = (state, action) => {
           ...state,
           {
             productId: action.payload._id,
-            productName: action.payload.productName,
+            recipeName: action.payload.recipeName,
             price: action.payload.defaultPrice,
             quantity: 1,
           },

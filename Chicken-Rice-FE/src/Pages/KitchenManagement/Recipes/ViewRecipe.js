@@ -6,8 +6,7 @@ import BASEURL from "../../../Config/Config";
 import { getCategories } from "../../../utility/recipe/recipe";
 import { useEffect } from "react";
 import { getaddons } from "../../../utility/Addons/addons";
-import Select from 'react-select'
-
+import ReactSelect from "react-select";
 
 export default function ViewRecipe({show,setShow , selectedProduct})
  {
@@ -27,18 +26,19 @@ export default function ViewRecipe({show,setShow , selectedProduct})
       getAllAddons()
   },[])
 
-      const addonsOptions = addons.map((ele, i) => ({
-        value:ele.addonsName, 
-        label: ele.addonsName,
-      }));
-
-      const handleAddons = (selectedOptions) => {  
-        const selectAddons = selectedOptions.map((option) => option.value);
-        setProduct({
-          ...product,
-          addonsName: selectAddons, 
-        });
-      };
+  const addonsOptions = addons.map((addon) => ({
+    label: addon.addonsName,
+    value: addon._id,
+  }));
+    
+  const handleAddons = (selectedOptions) => {
+    const selectAddons = selectedOptions.map((option) => option.value);
+    console.log('selectAddons',selectAddons)
+    setProduct({
+      ...product,
+      addonsName: selectAddons,
+    });
+  };
   
     
 
@@ -51,7 +51,7 @@ export default function ViewRecipe({show,setShow , selectedProduct})
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['link', 'image', 'video'],
         [{ 'color': [] }],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Added array of header options
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['clean'],
       ],
     },
@@ -126,16 +126,16 @@ export default function ViewRecipe({show,setShow , selectedProduct})
                             <div className="mb-3">
 
                                 <label for="">addons name</label><span className="text-danger">*</span>
-                                <Select
-                  required
-                  isMulti
-                  disabled={product.addonsName}
-                  isDisabled={product.addonsName}
-                  value={product.addonsName
-                    ? addonsOptions.filter((option) => product.addonsName.includes(option.value))
-                    : []}
-                  options={addonsOptions}
-                />
+                             
+                 <ReactSelect  required
+      isMulti
+      isDisabled={product.addonsName}
+      value={addonsOptions.filter((option) => product.addonsName.includes(option.value))}
+      onChange={handleAddons}
+      options={addonsOptions}
+    />
+
+
       
                             </div>
                         </div>

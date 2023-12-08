@@ -72,8 +72,15 @@ import QueueDisplay from "./Pages/KitchenManagement/queueDisplay/queueDisplay";
 import { CartProvider } from "./Pages/POS/POSOrder/Reducer";
 import KitchenScreen from "./Pages/KitchenScreen/KitchenScreen";
 import { ToastContainer } from "react-toastify";
+import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
 import "react-toastify/dist/ReactToastify.css";
 import SettingProvider from "./Context/SettingContext";
+import AddPOS from "./Pages/POSMobileScreen/AddPOS";
+import AddOnPos from "./Pages/POSMobileScreen/POSCheckOut/AddOnPos";
+import MenuComponent from "./Pages/POSMobileScreen/POSCheckOut/MenuPOS";
+import Check from "./Pages/POSMobileScreen/POSCheckOut/Check";
+import OrderSummary from "./Pages/POSMobileScreen/POSCheckOut/OrderSummary";
+import PaymentCheckOut from "./Pages/POSMobileScreen/POSCheckOut/PaymentCheckOut";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
@@ -308,6 +315,12 @@ root.render(
               {/* <Route path="practice" element={<Practice/>}/> */}
 
               <Route path="/queuedisplay" element={<QueueDisplay />} />
+              <Route path="/addpos" element={<AddPOS />} />
+              <Route path="/menucomponent" element={<MenuComponent />} />
+              <Route path="/addonpos" element={<AddOnPos />} />
+              <Route path="/check" element={<Check />} />
+              <Route path="/ordersummary" element={<OrderSummary />} />
+              <Route path="/paymentcheckout" element={<PaymentCheckOut />} />
 
               <Route path="/pos/dashboard" element={<PosDashboard />} />
               <Route path="/pos/productmodal" element={<ProductModal />} />
@@ -417,6 +430,113 @@ root.render(
                   </Common>
                 }
               />
+
+              <Route
+                path="/pos/setting/tables"
+                element={<TablesManagement />}
+              />
+              <Route path="/pos/salesReport" element={<SalesReport />} />
+              <Route path="/pos/invoicing" element={<InvoicingPos />} />
+              <Route path="/pos/setting/cashInOut" element={<CashInOut />} />
+              <Route path="/pos/setting/floor" element={<Floor />} />
+              <Route path="/pos/customer" element={<Customer />} />
+              <Route
+                path="/configration/generalsetting"
+                element={
+                  <Common>
+                    <GeneralSetting />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/feacturesactivation"
+                element={
+                  <Common>
+                    <FeaturesActivation />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/language"
+                element={
+                  <Common>
+                    <Language />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/currency"
+                element={
+                  <Common>
+                    <Currency />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/taxes"
+                element={
+                  <Common>
+                    <Tax />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/pickuppoint"
+                element={
+                  <Common>
+                    <PickupPoint />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/smptsetting"
+                element={
+                  <Common>
+                    <SMPTSetting />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/paymentmethods"
+                element={
+                  <Common>
+                    <PaymentMethod />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/filesystemcredentials"
+                element={
+                  <Common>
+                    <FileSystemCredentials />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/sociallogin"
+                element={
+                  <Common>
+                    <SocialLogin />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/analyticstools"
+                element={
+                  <Common>
+                    <AnalyticsTools />
+                  </Common>
+                }
+              />
+              <Route
+                path="/configration/googleRecaptchasettings"
+                element={
+                  <Common>
+                    <GoogleRecaptchaSettings />
+                  </Common>
+                }
+              />
+              <Route path="/pos/poscheck" element={<POSCheckOut />} />
 
               <Route path="/posmain" element={<POSMain />} />
               <Route
