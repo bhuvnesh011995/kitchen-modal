@@ -56,7 +56,7 @@ export default function POSOrderSlipt(){
             <tbody>
             {Paymentslipt.map((item) => (
   <tr className="service"  key={item.productId}>
-      <td className="tableitem"><p className="itemtext">{item.productName}</p></td>
+      <td className="tableitem"><p className="itemtext">{item.recipeName}</p></td>
       <td className="tableitem"><p className="itemtext">{item.quantity}</p></td>
       <td className="tableitem"><p className="itemtext">${item.quantity * item.price}</p></td>
               </tr>  ))}

@@ -2,7 +2,7 @@ const {Schema,model} = require("mongoose")
 
 const schema = new Schema({
   
-productName:{
+    recipeName:{
     type:String
 }, 
  file:{
@@ -16,7 +16,8 @@ category:{
 defaultPrice:{
     type:String
 },
-addonsName: [{ type: String }],
+addonsName: [{ type: Schema.Types.ObjectId, ref: "addons" }],
+
 
 discount:{
     type:String

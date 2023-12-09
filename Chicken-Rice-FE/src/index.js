@@ -73,6 +73,13 @@ import { CartProvider } from "./Pages/POS/POSOrder/Reducer";
 import KitchenScreen from "./Pages/KitchenScreen/KitchenScreen";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
+import AddPOS from "./Pages/POSMobileScreen/AddPOS";
+import AddOnPos from "./Pages/POSMobileScreen/POSCheckOut/AddOnPos";
+import MenuComponent from "./Pages/POSMobileScreen/POSCheckOut/MenuPOS";
+import Check from "./Pages/POSMobileScreen/POSCheckOut/Check";
+import OrderSummary from "./Pages/POSMobileScreen/POSCheckOut/OrderSummary";
+import PaymentCheckOut from "./Pages/POSMobileScreen/POSCheckOut/PaymentCheckOut";
 import SettingProvider from "./Context/SettingContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -308,7 +315,12 @@ root.render(
               {/* <Route path="practice" element={<Practice/>}/> */}
 
               <Route path="/queuedisplay" element={<QueueDisplay />} />
-
+              <Route path="/addpos" element={<AddPOS />} />
+              <Route path="/menucomponent" element={<MenuComponent />} />
+              <Route path="/addonpos" element={<AddOnPos />} />
+              <Route path="/check" element={<Check />} />
+              <Route path="/ordersummary" element={<OrderSummary />} />
+              <Route path="/paymentcheckout" element={<PaymentCheckOut />} />
               <Route path="/pos/dashboard" element={<PosDashboard />} />
               <Route path="/pos/productmodal" element={<ProductModal />} />
 

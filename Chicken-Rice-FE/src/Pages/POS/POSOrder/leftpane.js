@@ -30,7 +30,7 @@ export default function LeftPane() {
                 <li className="orderline ">
                 {shoppingCart.map((item) => (
     <div key={item.productId} className="row orderline  selected has-change justify-content-end align-items-center"        style={{marginTop:'2%'}}>
-    <div className="col-md-4">{item.productName}</div>  
+    <div className="col-md-4">{item.recipeName}</div>  
     <div className="col-md-4 d-flex justify-content-end align-items-center">
 
     <div className="col-md-4 d-flex justify-content-end align-items-center">
