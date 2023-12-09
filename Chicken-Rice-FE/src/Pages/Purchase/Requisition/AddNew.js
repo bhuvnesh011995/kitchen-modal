@@ -4,9 +4,18 @@ import { toast } from "react-toastify";
 import { api } from "../../../Context/AuthContext";
 import { CommonDataTable } from "../../../Components/Common/commonDataTable";
 import { purchaseRequisitionOrderLines } from "../../../constants/table.constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getProduct } from "../../../utility/product/product";
+import { FormattedMessage } from "react-intl";
+import moment from "moment";
 
-export default function AddNew({ show, setShow, viewModal }) {
+export default function AddNew({
+  show,
+  setShow,
+  viewModal,
+  requisitionData,
+  callback,
+}) {
   const {
     register,
     handleSubmit,
@@ -14,6 +23,7 @@ export default function AddNew({ show, setShow, viewModal }) {
     getValues,
     setValue,
     watch,
+    reset,
   } = useForm();
 
   const newOrderLine = {
@@ -26,6 +36,20 @@ export default function AddNew({ show, setShow, viewModal }) {
     gross: 0,
   };
   const [orderLines, setOrderLines] = useState([]);
+  // const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    // allRecipes();
+    if (requisitionData) {
+      requisitionData.requesterDeliveryDate = moment(
+        requisitionData.requesterDeliveryDate
+      ).format("YYYY-DD-MM");
+      reset(requisitionData);
+      if (requisitionData.orderLines.length) {
+        setOrderLines([...requisitionData.orderLines]);
+      }
+    }
+  }, []);
 
   const submitRequisitionData = async (data) => {
     try {
@@ -42,18 +66,29 @@ export default function AddNew({ show, setShow, viewModal }) {
 
       data["orderLines"] = orderLines;
       if (data?._id) {
-        const updatedRequisition = await api.post(
-          "/purchaseRequisition/updatePurchaseRequisition/" + data._id,
+        const updatedRequisition = await api.put(
+          "/purchaseRequisition/updatePurchaseRequisition",
           data
         );
-        console.log(updatedRequisition);
+        if (updatedRequisition.status == 200) {
+          callback(data);
+          toast.success(updatedRequisition.data.message);
+        } else {
+          toast.error("something went wrong");
+        }
       } else {
         const newRequisition = await api.post(
           "/purchaseRequisition/addPurchaseRequisition",
           data
         );
-        console.log(newRequisition);
+        if (newRequisition.status == 200) {
+          callback(newRequisition.data.data);
+          toast.success(newRequisition.data.message);
+        } else {
+          toast.error("something went wrong");
+        }
       }
+      setShow(false);
     } catch (err) {
       console.error(err);
     }
@@ -92,6 +127,17 @@ export default function AddNew({ show, setShow, viewModal }) {
       setOrderLines([...orderLines]);
     }
   };
+
+  // const allRecipes = async () => {
+  //   try {
+  //     const recipes = await getProduct();
+  //     if (recipes.status == 200) {
+  //       setAllProducts(recipes.data.product);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <Modal size="xl" show={show} onHide={() => setShow(false)}>
@@ -268,15 +314,17 @@ export default function AddNew({ show, setShow, viewModal }) {
                     <div class="col-sm-6">
                       <h2>Order Lines</h2>
                     </div>
-                    <div class="col-sm-6">
-                      <button
-                        type="button"
-                        class="btn btn-info add-new"
-                        onClick={addNewOrderLineRow}
-                      >
-                        <i class="fa fa-plus"></i> Add Row
-                      </button>
-                    </div>
+                    {!viewModal && (
+                      <div class="col-sm-6">
+                        <button
+                          type="button"
+                          class="btn btn-info add-new"
+                          onClick={addNewOrderLineRow}
+                        >
+                          <i class="fa fa-plus"></i> Add Row
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <CommonDataTable
@@ -285,6 +333,7 @@ export default function AddNew({ show, setShow, viewModal }) {
                   actionButtons
                   deleteButton
                   inputCells
+                  disableFields={viewModal}
                   callback={(data, type, index) =>
                     updateOrderLinesData(data, type, index)
                   }
@@ -292,14 +341,40 @@ export default function AddNew({ show, setShow, viewModal }) {
                     orderLines[index][inputName] = inputValue;
                     setOrderLines([...orderLines]);
                   }}
+                  // changeSelectedColumnDataDesign={["product"]}
+                  // changedDataCellColumn={(tableHeader, accessor) => {
+                  //   return {
+                  //     accessorKey: accessor,
+                  //     header: tableHeader,
+                  //     Headers: () => (
+                  //       <FormattedMessage
+                  //         id={tableHeader}
+                  //         defaultMessage={tableHeader}
+                  //       />
+                  //     ),
+                  //     Cell: () => (
+                  //       <select {...register} className="form-select">
+                  //         {allProducts.length &&
+                  //           allProducts.map((product) => (
+                  //             <option key={product?._id} value={product?._id}>
+                  //               {product?.recipeName}
+                  //             </option>
+                  //           ))}
+                  //         <option value="">Project 1</option>
+                  //       </select>
+                  //     ),
+                  //   };
+                  // }}
                 />
               </div>
             </div>
           </div>
           <Modal.Footer>
-            <button type="submit" class="btn btn-primary">
-              Save
-            </button>
+            {!viewModal && (
+              <button type="submit" class="btn btn-primary">
+                {requisitionData ? "Update" : "Save"}
+              </button>
+            )}
             <button
               type="button"
               class="btn btn-danger"

@@ -72,6 +72,7 @@ import QueueDisplay from "./Pages/KitchenManagement/queueDisplay/queueDisplay";
 import { CartProvider } from "./Pages/POS/POSOrder/Reducer";
 import KitchenScreen from "./Pages/KitchenScreen/KitchenScreen";
 import { ToastContainer } from "react-toastify";
+import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
 import "react-toastify/dist/ReactToastify.css";
 import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
 import AddPOS from "./Pages/POSMobileScreen/AddPOS";
@@ -81,6 +82,12 @@ import Check from "./Pages/POSMobileScreen/POSCheckOut/Check";
 import OrderSummary from "./Pages/POSMobileScreen/POSCheckOut/OrderSummary";
 import PaymentCheckOut from "./Pages/POSMobileScreen/POSCheckOut/PaymentCheckOut";
 import SettingProvider from "./Context/SettingContext";
+import AddPOS from "./Pages/POSMobileScreen/AddPOS";
+import AddOnPos from "./Pages/POSMobileScreen/POSCheckOut/AddOnPos";
+import MenuComponent from "./Pages/POSMobileScreen/POSCheckOut/MenuPOS";
+import Check from "./Pages/POSMobileScreen/POSCheckOut/Check";
+import OrderSummary from "./Pages/POSMobileScreen/POSCheckOut/OrderSummary";
+import PaymentCheckOut from "./Pages/POSMobileScreen/POSCheckOut/PaymentCheckOut";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
@@ -321,6 +328,7 @@ root.render(
               <Route path="/check" element={<Check />} />
               <Route path="/ordersummary" element={<OrderSummary />} />
               <Route path="/paymentcheckout" element={<PaymentCheckOut />} />
+
               <Route path="/pos/dashboard" element={<PosDashboard />} />
               <Route path="/pos/productmodal" element={<ProductModal />} />
 
@@ -397,6 +405,14 @@ root.render(
                   </Common>
                 }
               />
+             
+              
+             
+              
+              
+              
+              
+              
               <Route
                 path="/configration/filesystemcredentials"
                 element={
@@ -429,6 +445,7 @@ root.render(
                   </Common>
                 }
               />
+              <Route path="/pos/poscheck" element={<POSCheckOut />} />
 
               <Route path="/posmain" element={<POSMain />} />
               <Route

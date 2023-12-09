@@ -11,6 +11,7 @@ export const CommonDataTable = ({
   callback,
   viewButton,
   inputCells,
+  disableFields,
   inputTypeColumnCallback,
   tableSearchBar = true,
   enableRowNumbers = true,
@@ -55,13 +56,14 @@ export const CommonDataTable = ({
             onChange={({ target }) => {
               inputTypeColumnCallback(target.value, e, row.index);
             }}
+            disabled={disableFields}
             value={row.original[e]}
             placeholder={`${tableHeaders[e]}`}
           />
         </div>
       );
   });
-
+  console.log(disableFields);
   if (actionButtons) {
     tableColumns.push({
       header: "Actions",
@@ -72,6 +74,7 @@ export const CommonDataTable = ({
         <div className="hstack gap-2 fs-1">
           {viewButton && (
             <button
+              disabled={disableFields}
               onClick={() => callback(row.original, "view", row.index)}
               className="btn btn-icon btn-sm btn-warning rounded-pill"
             >
@@ -80,6 +83,7 @@ export const CommonDataTable = ({
           )}
           {editButton && (
             <button
+              disabled={disableFields}
               onClick={() => {
                 callback(row.original, null, row.index);
               }}
@@ -90,6 +94,7 @@ export const CommonDataTable = ({
           )}
           {deleteButton && (
             <button
+              disabled={disableFields}
               onClick={() => callback(row.original, "delete", row.index)}
               className="btn btn-icon btn-sm btn-danger rounded-pill"
             >

@@ -22,7 +22,12 @@ const allPurchaseRequisitions = async (req, res, next) => {
 };
 const deletePurchaseRequisition = async (req, res, next) => {
   try {
-    console.log("inside api", req.params);
+    const deleteRequisition = await db.purchaseRequisition.deleteOne({
+      _id: req.params.id,
+    });
+    return res
+      .status(200)
+      .send({ message: "requisition deleted successfully !" });
     // const deleteSelectedPurchaseRequisition
   } catch (err) {
     console.error(err);
@@ -30,8 +35,16 @@ const deletePurchaseRequisition = async (req, res, next) => {
 };
 const updatePurchaseRequisition = async (req, res, next) => {
   try {
-    // const updateSelectedPurchaseRequisition
-    console.log("inside api");
+    const { body } = req;
+    const updatedRequisition = await db.purchaseRequisition.updateOne(
+      { _id: req.body._id },
+      {
+        $set: body,
+      }
+    );
+    return res.status(200).send({
+      message: "Purchase Requisition Updated",
+    });
   } catch (err) {
     console.error(err);
   }

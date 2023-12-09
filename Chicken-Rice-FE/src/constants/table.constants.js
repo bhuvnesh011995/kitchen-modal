@@ -10,10 +10,19 @@ export const purchaseRequisitionOrderLines = {
 
 export const purchaseRequisitionHeaders = {
   requesterReference: "Referance",
-  quotationId: "Quotation Id",
   created_at: "Order Date",
   requesterName: "Requester Name",
   subTotal: "Sub Total",
   totalAmount: "Total Amount",
-  status: "Status",
+};
+
+export const purchaseOrderHeaders = {
+  referance: "Referance",
+  orderNo: "Order Number",
+  orderDate: "Order Date",
+  requesterName: "Requester Name",
+  scheduleDate: "Schedule Date",
+  subTotal: "Sub Total",
+  totalAmount: "Total Amount",
+  billingStatus: "Billing Status",
 };
