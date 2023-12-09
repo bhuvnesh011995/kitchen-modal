@@ -72,15 +72,15 @@ import QueueDisplay from "./Pages/KitchenManagement/queueDisplay/queueDisplay";
 import { CartProvider } from "./Pages/POS/POSOrder/Reducer";
 import KitchenScreen from "./Pages/KitchenScreen/KitchenScreen";
 import { ToastContainer } from "react-toastify";
-import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
+
 import "react-toastify/dist/ReactToastify.css";
 import POSCheckOut from "./Pages/POSMobileScreen/POSCheckOut/POSCheckOut";
-import AddPOS from "./Pages/POSMobileScreen/AddPOS";
-import AddOnPos from "./Pages/POSMobileScreen/POSCheckOut/AddOnPos";
-import MenuComponent from "./Pages/POSMobileScreen/POSCheckOut/MenuPOS";
-import Check from "./Pages/POSMobileScreen/POSCheckOut/Check";
-import OrderSummary from "./Pages/POSMobileScreen/POSCheckOut/OrderSummary";
-import PaymentCheckOut from "./Pages/POSMobileScreen/POSCheckOut/PaymentCheckOut";
+
+
+
+
+
+
 import SettingProvider from "./Context/SettingContext";
 import AddPOS from "./Pages/POSMobileScreen/AddPOS";
 import AddOnPos from "./Pages/POSMobileScreen/POSCheckOut/AddOnPos";
