@@ -1,6 +1,42 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import MainPage from '../../../Components/Common/MainPage'
+import useCustomEffect from '../../../utility/CustomHook/useCustomEffect'
+import { getMailConfiguration, updateEmailConfig } from '../../../utility/mailConfig/mailConfig'
+import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
+
+
 export default function SMPTSetting() {
+  const {register,reset,handleSubmit,formState:{errors},watch} = useForm()
+  const [updateData,setUpdateData] =useState({})
+  const getMailConfig = useCallback(async()=>{
+      try {
+        const res = await getMailConfiguration()
+        if(res.status ===200){
+          reset(res.data)
+        }else toast.error("error occured while fetching")
+      } catch (error) {
+        toast.success("some error occured")
+      }
+    },[])
+  useCustomEffect(getMailConfig)
+
+  const updataConfig = useCallback(async configData=>{
+    try {
+      if(!configData) return toast.info("change some info to update")
+       let res = await updateEmailConfig(configData)
+      if(res.status===200){
+        toast.success("update succesfull")
+       reset(res.data)
+       setUpdateData(null)
+      }else toast.error("error occured while updating")
+    } catch (error) {
+      toast.error("some error occured")
+    }
+  },[])
+
+
+
   return (
     <MainPage title={"SMT SETTING"}>
     <div className="container">
@@ -8,30 +44,32 @@ export default function SMPTSetting() {
       <div className="col-md-6">
         <div className="card">
           <div className="card-body">
-            <form action="#">
+            <form onSubmit={handleSubmit(async data=>updataConfig(updateData))}>
               <div className="form-group">
                 <label className="col-form-label">Type</label>
-                <select className="form-select mb-2 mb-md-0" id="mailTypeSelect">
+                <select
+                {...register("TYPE",{onChange:e=>setUpdateData(preVal=>({...preVal,TYPE:e.target.value}))})}
+                  className="form-select mb-2 mb-md-0" id="mailTypeSelect">
                   <option value="smtp">SMTP</option>
                   <option value="mailgun">Mailgun</option>
                 </select>
               </div>
-              <div id="smtp" className="mt-2">
+              {watch("TYPE")!="mailgun" && <div className="mt-2">
                 <div className="form-group mb-2">
                   <label className="col-from-label">MAIL HOST</label>
                   <input
+                    {...register("HOST",{onChange:e=>setUpdateData(preVal=>({...preVal,HOST:e.target.value}))})}
                     type="text"
                     className="form-control"
-                    defaultValue="mailhog"
                     placeholder="MAIL HOST"
                   />
                 </div>
                 <div className="form-group mb-2">
                   <label className="col-from-label">MAIL PORT</label>
                   <input
+                   {...register("PORT",{onChange:e=>setUpdateData(preVal=>({...preVal,PORT:e.target.value}))})}
                     type="text"
                     className="form-control"
-                    defaultValue="1025"
                     placeholder="MAIL PORT"
                   />
                 </div>
@@ -40,7 +78,7 @@ export default function SMPTSetting() {
                   <input
                     type="text"
                     className="form-control"
-                    value=""
+                    {...register("USERNAME",{onChange:e=>setUpdateData(preVal=>({...preVal,USERNAME:e.target.value}))})}
                     placeholder="MAIL USERNAME"
                   />
                 </div>
@@ -49,7 +87,7 @@ export default function SMPTSetting() {
                   <input
                     type="text"
                     className="form-control"
-                    value=""
+                    {...register("PASSWORD",{onChange:e=>setUpdateData(preVal=>({...preVal,PASSWORD:e.target.value}))})}
                     placeholder="MAIL PASSWORD"
                   />
                 </div>
@@ -58,7 +96,7 @@ export default function SMPTSetting() {
                   <input
                     type="text"
                     className="form-control"
-                    value=""
+                    {...register("ENCRYPTION",{onChange:e=>setUpdateData(preVal=>({...preVal,ENCRYPTION:e.target.value}))})}
                     placeholder="MAIL ENCRYPTION"
                   />
                 </div>
@@ -67,7 +105,7 @@ export default function SMPTSetting() {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="hello@example.com"
+                    {...register("ADDRESS",{onChange:e=>setUpdateData(preVal=>({...preVal,ADDRESS:e.target.value}))})}
                     placeholder="MAIL FROM ADDRESS"
                   />
                 </div>
@@ -76,31 +114,31 @@ export default function SMPTSetting() {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="Laravel"
+                    {...register("NAME",{onChange:e=>setUpdateData(preVal=>({...preVal,NAME:e.target.value}))})}
                     placeholder="MAIL FROM NAME"
                   />
                 </div>
+              </div>}
+            {watch("TYPE")==="mailgun" &&<div className="mt-2">
+              <div className="form-group mb-2">
+                <label className="col-from-label">MAILGUN DOMAIN</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  {...register("MAILGUN_DOMAIN",{onChange:e=>setUpdateData(preVal=>({...preVal,MAILGUN_DOMAIN:e.target.value}))})}
+                  placeholder="MAILGUN DOMAIN"
+                />
               </div>
-              <div id="mailgun" style={{ display: 'none' }} className="mt-2">
-                <div className="form-group mb-2">
-                  <label className="col-from-label">MAILGUN DOMAIN</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value=""
-                    placeholder="MAILGUN DOMAIN"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="col-from-label">MAILGUN SECRET</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value=""
-                    placeholder="MAILGUN SECRET"
-                  />
-                </div>
+              <div className="form-group">
+                <label className="col-from-label">MAILGUN SECRET</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  {...register("MAILGUN_SECRET",{onChange:e=>setUpdateData(preVal=>({...preVal,MAILGUN_SECRET:e.target.value}))})}
+                  placeholder="MAILGUN SECRET"
+                />
               </div>
+            </div>}
               <div className="form-group mb-0 mt-3 text-end">
                 <button type="submit" className="btn btn-primary">Save Configuration</button>
               </div>

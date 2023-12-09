@@ -1,10 +1,15 @@
 const languageController = require("../controller/language.controller")
+const {Router, application} = require("express")
+let router  = Router()
 
-module.exports = app =>{
-    app.post("/cr/api/v1/languages",[],languageController.addLanguage)
-    app.get("/cr/api/v1/languages",[],languageController.getLanguages)
-    app.delete("/cr/api/v1/languages/:id",[],languageController.deleteLanguage)
-    app.put("/cr/api/v1/languages/:id",[],languageController.updateLanguage)
-    app.put("/cr/api/v1/languages/language/:id",languageController.updateLanguageFields)
-    app.get("/cr/api/v1/languages/:id",languageController.getLanguageById)
+    router.post("/",[],languageController.addLanguage)
+    router.get("/",[],languageController.getLanguages)
+    router.delete("/:id",[],languageController.deleteLanguage)
+    router.put("/:id",[],languageController.updateLanguage)
+    router.put("/language/:id",languageController.updateLanguageFields)
+    router.get("/:id",languageController.getLanguageById)
+
+
+    module.exports = app =>{
+app.use("/cr/api/v1/languages",router)
 } 

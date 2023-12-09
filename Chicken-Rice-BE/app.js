@@ -106,6 +106,16 @@ else {
 
 
 
+ // checking mailConfig setting
+
+ let mailConfig = await models.mailConfig.findOne()
+
+ if(!mailConfig){
+    await models.mailConfig.create({})
+    console.log("mail Configuration created")
+  }else console.log("mail config already present")
+
+
 
 } catch (error) {
       console.log(error)

@@ -11,7 +11,7 @@ const initialUser = {
   token: null,
 };
 
-let api;
+let api,formApi;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(initialUser);
@@ -39,25 +39,29 @@ export default function AuthProvider({ children }) {
     getPermission();
   }, [user]);
 
-  let baseURL = BASEURL;
+    let baseURL = BASEURL;
+    const headers = {
+    'x-access-token':user.token,
+    'Content-Type': 'application/json',
+    }
+    const formheaders = {
+        'x-access-token':user.token,
+        "Content-Type": "multipart/form-data",
+        }
 
-  const headers = {
-    "x-access-token": token,
-    "Content-Type": "application/json",
-  };
+    formApi = axios.create({
+        baseURL,headers:formheaders
+    })
+    api = axios.create({
+        baseURL,headers
+    })
 
-  api = axios.create({
-    baseURL,
-    headers,
-  });
 
-  return (
-    <authContext.Provider
-      value={{ user, setUser, initialUser, permissions, setPermissions }}
-    >
-      {children}
-    </authContext.Provider>
-  );
+    return(
+        <authContext.Provider value={{user,setUser,initialUser,permissions,setPermissions}}>
+            {children}
+        </authContext.Provider>
+    )
 }
 
-export { authContext, api };
+export {authContext,api,formApi}

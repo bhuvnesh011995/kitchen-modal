@@ -1,17 +1,12 @@
 const db = require("../models")
+const { create_error } = require("../utility/createError")
 
 exports.addCurrency = async function(req,res,next){
-    const {name,code,symbol,exchangeRate} = req.body
-    console.log(req.body)
-    try {
-        let obj = {}
 
-        if(name) obj.name = name
-        if(code) obj.code =code
-        if(symbol) obj.symbol = symbol
-        if(exchangeRate) obj.exchangeRate =exchangeRate
-        await db.currency.create(obj)
-        res.status(201).end()
+    try {
+        
+        let currency=await db.currency.create(req.body)
+        res.status(200).json(currency)
         
     } catch (error) {
        next(error)
@@ -20,21 +15,16 @@ exports.addCurrency = async function(req,res,next){
 
 exports.getCurrency = async function(req,res,next){
     try {
-        let currency = await db.currency.find()
-
-        if(!currency || !currency.length) return res.status(201).end()
+        let currencies = await db.currency.aggregate([
+            {$match:{}},
+            {$project:{
+                name:1,code:1,symbol:1,exchangeRate:1
+            }}
+        ])
         
-        res.status(200).json({
-            success:true,
-            currency
-        })
+        res.status(200).json(currencies)
     } catch (error) {
-        console.error(error)
-
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+        next(error)
     }
 }
 exports.deleteCurrency = async function(req,res,next){
@@ -42,22 +32,14 @@ exports.deleteCurrency = async function(req,res,next){
     try {
         let isExist = await db.currency.exists({_id:id})
         
-        if(!isExist) return res.status(400).json({
-            success:false,
-            message:"no currency exist"
-        })
+        if(!isExist) throw create_error(400,'no currency available')
         
         await db.currency.deleteOne({_id:id})
   
         res.status(204).end();
   
     } catch (error) {
-        console.error(error)
-  
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+        next(error)
     }
   }
 
@@ -68,28 +50,21 @@ exports.deleteCurrency = async function(req,res,next){
          
         let isExist = await db.currency.exists({_id:id})
         
-        if(!isExist) return res.status(400).json({
-            success:false,
-            message:"no currency exist"
-        })
+        if(!isExist) throw create_error(400,'no currency available')
   
         let obj = {}
-        if(name) obj.name = name
-        if(code) obj.code = code
-        if(symbol) obj.symbol = symbol
-        if(exchangeRate) obj.exchangeRate =exchangeRate
-        await db.currency.findOneAndUpdate({_id:id},{
+        if(name!=undefined) obj.name = name
+        if(code!=undefined) obj.code = code
+        if(symbol!=undefined) obj.symbol = symbol
+        if(exchangeRate!=undefined) obj.exchangeRate =exchangeRate
+        let currency = await db.currency.findOneAndUpdate({_id:id},{
             $set:obj
-        })
+        },{new:true})
   
-        res.status(201).end()
+        res.status(200).json(currency)
   
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            success:false,
-            message:"some error occured"
-        })
+        next(error)
     }
   }
   
