@@ -2509,7 +2509,11 @@
   dependencies:
     "@types/react" "*"
 
+<<<<<<< Updated upstream
 "@types/react@*", "@types/react@>=16.9.11":
+=======
+"@types/react@*", "@types/react@16 || 17 || 18", "@types/react@>=16.9.11":
+>>>>>>> Stashed changes
   version "18.2.21"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.21.tgz"
   integrity sha512-neFKG/sBAwGxHgXiIxnbm3/AAVQ/cMRS93hvBpg8xYRbeQSPVABp9U2bRnPf0iI4+Ucdv3plSxKK+3CW2ENJxA==
@@ -7219,6 +7223,14 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.6"
 
+<<<<<<< Updated upstream
+=======
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
+>>>>>>> Stashed changes
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -8539,7 +8551,11 @@ react-intl@^6.5.5:
 
 react-is@^16.13.1, react-is@^16.3.2, react-is@^16.7.0:
   version "16.13.1"
+<<<<<<< Updated upstream
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+=======
+  resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
+>>>>>>> Stashed changes
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react-is@^17.0.1:
@@ -8549,7 +8565,11 @@ react-is@^17.0.1:
 
 react-is@^18.0.0, react-is@^18.2.0:
   version "18.2.0"
+<<<<<<< Updated upstream
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
+=======
+  resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
+>>>>>>> Stashed changes
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
 react-lifecycles-compat@^3.0.4:
