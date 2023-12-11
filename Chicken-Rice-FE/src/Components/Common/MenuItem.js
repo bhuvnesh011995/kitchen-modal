@@ -93,17 +93,9 @@ export default [
     icon: "bx bx-buoy",
     children: [
       { to: "/configration/generalsetting", name: "General Setting" ,permissionCode:"95",},
-      { to: "/configration/feacturesactivation", name: "Features Activation" ,permissionCode:"20",},
       { to: "/configration/language", name: "Language" ,permissionCode:"50",},
       { to: "/configration/currency", name: "Currency" ,permissionCode:"45",},
-      { to: "/configration/taxes", name: "Vat & Tax" ,permissionCode:"45",},
-      { to: "/configration/pickuppoint", name: "All Pick-up Points" ,permissionCode:"25",},
-      { to: "/configration/smptsetting", name: "SMPT Setting" ,permissionCode:"25",},
-      { to: "/configration/paymentmethods", name: "Payment Methods" ,permissionCode:"35",},                        
-      { to: "/configration/filesystemcredentials", name: "File System Credentials" ,permissionCode:"35",},                        
-      { to: "/configration/sociallogin", name: "Social Media Logins" ,permissionCode:"35",},                        
-      { to: "/configration/analyticstools", name: "Analytics Tools" ,permissionCode:"35",},                        
-      { to: "/configration/googleRecaptchasettings", name: "Google reCAPTCHA" ,permissionCode:"35",},                        
+      { to: "/configration/taxes", name: "Vat & Tax" ,permissionCode:"45",},                     
 
     ],
   },

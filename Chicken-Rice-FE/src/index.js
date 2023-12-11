@@ -54,17 +54,10 @@ import PosOrder from "./Pages/KitchenManagement/Order/PosOrder";
 import QrBuilder from "./Pages/Orders/MenuManagement/QrBuilder/QrBuilder";
 import QrCodeGenerator from "./Pages/Orders/MenuManagement/QrBuilder/QrCodeGenerate";
 import GeneralSetting from "./Pages/SetupConfigration/GeneralSetting";
-import FeaturesActivation from "./Pages/SetupConfigration/FeaturesActivation";
+
 import Language from "./Pages/SetupConfigration/Language/Language";
 import Currency from "./Pages/SetupConfigration/Currency/Currency";
 import Tax from "./Pages/SetupConfigration/AllTaxes.js/tax";
-import PickupPoint from "./Pages/SetupConfigration/PickupPoint/PickupPoint";
-import SMPTSetting from "./Pages/SetupConfigration/SMPTSetting/SMPTSetting";
-import PaymentMethod from "./Pages/SetupConfigration/PaymentMethods/PaymentMethod";
-import FileSystemCredentials from "./Pages/SetupConfigration/FileSystemCnfigurations/FileSystemConfigurations";
-import SocialLogin from "./Pages/SetupConfigration/SocialMediaLogin/SocialLogin";
-import AnalyticsTools from "./Pages/SetupConfigration/AnalyticsTools/AnalyticsTools";
-import GoogleRecaptchaSettings from "./Pages/SetupConfigration/GooglereCAPTCHASetting/GooglereCAPTCHASetting";
 import StartSession from "./Pages/POS/POSOrder/StartSession";
 import POSMain from "./Pages/POS/POSOrder/POSMain";
 import POSOrderSlipt from "./Pages/POS/POSOrder/POSOrderSlip";
@@ -350,14 +343,6 @@ root.render(
                 }
               />
               <Route
-                path="/configration/feacturesactivation"
-                element={
-                  <Common>
-                    <FeaturesActivation />
-                  </Common>
-                }
-              />
-              <Route
                 path="/configration/language"
                 element={
                   <Common>
@@ -381,70 +366,8 @@ root.render(
                   </Common>
                 }
               />
-              <Route
-                path="/configration/pickuppoint"
-                element={
-                  <Common>
-                    <PickupPoint />
-                  </Common>
-                }
-              />
-              <Route
-                path="/configration/smptsetting"
-                element={
-                  <Common>
-                    <SMPTSetting />
-                  </Common>
-                }
-              />
-              <Route
-                path="/configration/paymentmethods"
-                element={
-                  <Common>
-                    <PaymentMethod />
-                  </Common>
-                }
-              />
-             
               
-             
-              
-              
-              
-              
-              
-              <Route
-                path="/configration/filesystemcredentials"
-                element={
-                  <Common>
-                    <FileSystemCredentials />
-                  </Common>
-                }
-              />
-              <Route
-                path="/configration/sociallogin"
-                element={
-                  <Common>
-                    <SocialLogin />
-                  </Common>
-                }
-              />
-              <Route
-                path="/configration/analyticstools"
-                element={
-                  <Common>
-                    <AnalyticsTools />
-                  </Common>
-                }
-              />
-              <Route
-                path="/configration/googleRecaptchasettings"
-                element={
-                  <Common>
-                    <GoogleRecaptchaSettings />
-                  </Common>
-                }
-              />
+         
               <Route path="/pos/poscheck" element={<POSCheckOut />} />
 
               <Route path="/posmain" element={<POSMain />} />
