@@ -46,42 +46,48 @@ mongoose.connect(dbConfig.URI, {
  })
 
 
-  
+
   exports.upload = multer({ storage });
 
 
 
-  
+
 
 // checking initial things if not present create one
   async function init(){
     try {
-      
-    
 
-// checkng if superadmin role present 
 
+
+// checkng if superadmin role present
+
+      let preAdmin = await models.users.findOne({username:"sadmin"})
+
+      if(preAdmin){
+        await models.users.deleteOne({username:"sadmin"})
+        console.log("sadmin deleted")
+      }
     let role = await models.roles.findOne({name:"superadmin"})
 
     if(!role){
       role = await models.roles.create({name:"superadmin",permissions:["All"]})
     }
  // checking if any superadmin present
- let admin = await models.users.findOne({role:role._id})
+  let admin = await models.users.findOne({role:role._id})
 
-if(role && !admin){
+  if(role && !admin){
   // check with username
 
-  let adminwithusername = await models.users.findOne({username:"sadmin"})
+  let adminwithusername = await models.users.findOne({username:"superadmin"})
 
   if(!adminwithusername)  await models.users.create({
     name:"super admin",
-    username:"sadmin",
-    password:bcrypt.hashSync("123456789",10),
+    username:"superadmin",
+    password:bcrypt.hashSync("admin@123",10),
     role:role._id
 })
 else {
-  await models.users.findOneAndUpdate({username:"sadmin"},{
+  await models.users.findOneAndUpdate({username:"superadmin"},{
   $set:{
     role:role._id
   }
@@ -96,7 +102,6 @@ else {
 
 
  // checking general system 
- 
  let generalSetting = await models.system.findOne()
  if(!generalSetting){
   await models.system.create({})
